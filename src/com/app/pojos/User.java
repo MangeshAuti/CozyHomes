@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -65,6 +66,7 @@ public class User implements Serializable {
 		this.active = active;
 	}
 
+	@Column(length=40,unique=true)
 	public String getEmail() {
 		return this.email;
 	}
@@ -147,21 +149,21 @@ public class User implements Serializable {
 	}
 
 	public Property addProperty(Property property) {
-		getProperties().add(property);
+		properties.add(property);
 		property.setUser(this);
-
 		return property;
 	}
 
 	public Property removeProperty(Property property) {
-		getProperties().remove(property);
+		properties.remove(property);
 		property.setUser(null);
-
 		return property;
 	}
 
 	
-	@OneToOne(mappedBy="user",cascade=CascadeType.ALL)
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="ADDR_ID")
 	public Address getAddress() {
 		return this.address;
 	}
@@ -171,10 +173,12 @@ public class User implements Serializable {
 	}
 
 
+	
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", email=" + email + ", mobileNo=" + mobileNo + ", name=" + name
-				+ ", password=" + password + ", regDate=" + regDate + ", role=" + role + "]";
+		return "User [userId=" + userId + ", active=" + active + ", email=" + email + ", imageAdd=" + imageAdd
+				+ ", mobileNo=" + mobileNo + ", name=" + name + ", password=" + password + ", regDate=" + regDate
+				+ ", role=" + role + ", tempId=" + tempId + ", properties=" + properties + ", address=" + address + "]";
 	}
 
 

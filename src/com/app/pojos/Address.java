@@ -17,23 +17,25 @@ public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int addrId;
 
-	private String street;
+	private String location;
 	
 	private String city;
 
 	private String state;
-	
+
 	private String country;
 
-	private Property property;
+	private String street;
+	/*private Property property;*/
 	
-	private User user;
+	/*private User user;*/
 
 	public Address() {
 	}
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ADDR_ID")
 	public int getAddrId() {
 		return addrId;
 	}
@@ -42,15 +44,15 @@ public class Address implements Serializable {
 		this.addrId = addrId;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
-	@Column(length=30)
+	@Column(length = 30)
 	public String getCity() {
 		return city;
 	}
@@ -59,7 +61,7 @@ public class Address implements Serializable {
 		this.city = city;
 	}
 
-	@Column(length=30)
+	@Column(length = 30)
 	public String getState() {
 		return state;
 	}
@@ -67,8 +69,8 @@ public class Address implements Serializable {
 	public void setState(String state) {
 		this.state = state;
 	}
-	
-	@Column(length=30)
+
+	@Column(length = 30)
 	public String getCountry() {
 		return country;
 	}
@@ -77,8 +79,10 @@ public class Address implements Serializable {
 		this.country = country;
 	}
 
-	@OneToOne
-	@JoinColumn
+
+	
+	/*@OneToOne
+	@JoinColumn(name="propId")
 	public Property getProperty() {
 		return property;
 	}
@@ -86,16 +90,23 @@ public class Address implements Serializable {
 	public void setProperty(Property property) {
 		this.property = property;
 	}
+*/
 	
-	@OneToOne
-	@JoinColumn
-	public User getUser() {
-		return user;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [addrId=" + addrId + ", location=" + location + ", city=" + city + ", state=" + state
+				+ ", country=" + country + ", street=" + street + "]";
+	}
 
+	
+
+	
 }

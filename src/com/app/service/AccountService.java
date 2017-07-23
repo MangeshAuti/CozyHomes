@@ -31,11 +31,8 @@ public class AccountService {
 		System.out.println(user.getPassword());
 		System.out.println(DigestUtils.md5Hex("mangesh"));
 		User activeUser = accountDao.validateUser(user);
-		if (activeUser != null) {
-			System.out.println(activeUser.toString());
-			activeUser.setPassword(null);
+		if (activeUser != null) 
 			return activeUser;
-		}
 		return null;
 	}
 
@@ -48,7 +45,11 @@ public class AccountService {
 		System.out.println("inside reg"+user.getPassword());
 		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
 		if (accountDao.addUser(user))
+		{
+			System.out.println("after add property in service"+user);
 			return user;
+		}
+			
 		return null;
 	}
 

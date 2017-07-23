@@ -37,6 +37,12 @@ public class Image {
 		this.property = property;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Image)
+			return imageId == ((Image) o).imageId;
+		return false;
+	}
 	
 	@Override
 	public String toString() {

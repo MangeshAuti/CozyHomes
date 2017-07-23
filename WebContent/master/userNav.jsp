@@ -22,7 +22,7 @@
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="owner">
 								<li><a
-									href="<%=request.getContextPath()%>/account/addProperty">Add
+									href="<%=request.getContextPath()%>/owner/addProperty">Add
 										Property</a></li>
 								<li><a
 									href="<%=request.getContextPath()%>/owner/myProperty">My

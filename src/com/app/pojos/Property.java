@@ -14,20 +14,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 public class Property implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	
 	private int propId;
 
+	@NotEmpty
 	private String accomFor;
 
+	@NotEmpty
 	private String accomType;
 
+	@NotEmpty
 	private String area;
 
+	@NotEmpty
 	private String deposite;
 
+	@NotEmpty
 	private String furnishType;
 
 	private List<Image> image;
@@ -36,6 +45,7 @@ public class Property implements Serializable {
 
 	private String noRooms;
 
+	@NotEmpty
 	private String propType;
 
 	private int rent;
@@ -138,6 +148,7 @@ public class Property implements Serializable {
 		this.rent = rent;
 	}
 
+	@Type(type="org.hibernate.type.NumericBooleanType")
 	public boolean isStatus() {
 		return status;
 	}
@@ -146,7 +157,9 @@ public class Property implements Serializable {
 		this.status = status;
 	}
 
-	@OneToOne(mappedBy = "property", cascade = CascadeType.ALL)
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="ADDR_ID")
 	public Address getAddress() {
 		return this.address;
 	}
@@ -156,7 +169,7 @@ public class Property implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "User_Id")
+	@JoinColumn(name = "USER_ID")
 	public User getUser() {
 		return this.user;
 	}
@@ -187,4 +200,20 @@ public class Property implements Serializable {
 
 		return image;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Property)
+			return propId == ((Property) obj).propId;
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Property [propId=" + propId + ", accomFor=" + accomFor + ", accomType=" + accomType + ", area=" + area
+				+ ", deposite=" + deposite + ", furnishType=" + furnishType + ", image=" + image + ", noBeds=" + noBeds
+				+ ", noRooms=" + noRooms + ", propType=" + propType + ", rent=" + rent + ", status=" + status
+				+ ", address=" + address + ", user=" + user + "]";
+	}
+	
 }

@@ -44,3 +44,35 @@ app.controller("LoginController",function($scope,$http){
 		}
 
 })
+
+/*add property*/
+var app = angular.module('myApp', []);
+				app.controller('myCtrl', function($scope) {
+					    $scope.PropertyTypes = [
+					    {type : "Select Property Type"},
+				        {type : " HK"},
+				        {type : "1BHK"},
+				        {type : "2BHK"},
+				        {type : "3BHK"},
+				        {type : "Banglo"}
+				        ];
+				    
+					     $scope.FurnishingTypes = [
+						    {type : "Select Furnish Type"},
+					        {type : "Full Furnished"},
+					        {type : "Semi Furnished"},
+					        {type : "Without Furnished"}
+			            ];
+					    $scope.AccomodationTypes = [
+						    {type : "Select Accomodation Type"},
+					        {type : "Shared"},
+					        {type : "Private"},
+					        {type : "Entire"}
+					        ];
+					    $scope.Beds_Rooms = [
+						    {type : "0"},
+					        {type : "1"},
+					        {type : "2"},
+					        {type : "3"}
+					        ];
+				});			
