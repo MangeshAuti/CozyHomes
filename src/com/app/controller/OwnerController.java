@@ -72,11 +72,12 @@ public class OwnerController {
 		
 	}
 	
+	//WORK IN PROGRESS
 	@PostMapping(value = "/deleteProperty")
 	public String ProcessdeletePropertyRequest(@RequestParam int propId,HttpSession hs) {
 		if (hs.getAttribute("activeUser") != null)
 		{
-			ownerService.deleteProperty(propId);
+			/*ownerService.deleteProperty(propId);*/
 		}
 		return "redirect:/";
 		
