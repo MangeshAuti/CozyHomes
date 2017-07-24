@@ -1,3 +1,11 @@
+ //css for Property
+ .prop_container{padding-top:30px;height:600px;overflow-y:scroll;}
+ .quick_action_glyph{color:blue;cursor:pointer;padding-right:5px;}     
+ .fa-prop{padding-left:60px;color:darkkhaki;}
+ .prop_info{cursor:pointer;}
+      
+
+
 .error {
 	color: red;
 }
@@ -16,10 +24,10 @@
 	height:auto;
 	align:auto;
 }
-.btn-warning,.panel-heading{
+/*.btn-warning,.panel-heading{
 	margin-right:10px;
 	margin-top:10px;
-}
+}*/
 .img-rounded{
 	margin-left:10px;
 }
@@ -85,3 +93,21 @@
         height: 20px;
         margin-bottom: 2px;
       }
+      
+      
+      //css for Property
+      .prop_container{padding-top:30px;}
+      .glyphicon{curser:pointer;}
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
