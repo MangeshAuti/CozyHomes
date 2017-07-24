@@ -16,7 +16,7 @@
 		<h4>${requestScope.status}</h4>
 		property id<h4>${sessionScope.propId}</h4>
 		<div class="col-md-16" id="addproperty_tab">
-			<form:form modelAttribute="property"  method="post" id="addproperty_form" class="form-horizontal">
+			<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
 				<div class="page-header">
 					<h4 style="font-weight: bold; font-size: 22px;">Add Property Information</h4>
 				</div>
@@ -120,18 +120,18 @@
 					             type="text"/>
 					    </div>
 					 </div>
-					 <%-- <div class="form-group">
+					<div class="form-group">
 			          <label class="control-label col-sm-2" for="address">Upload Image 1:</label>
 			           <div class="col-sm-4">  
-					     <form:input type="file" path="image[0]" id="image[0]" class="form-control" value="Upload" name='file[0]'/>
+					     <input type="file"  name="photos" class="form-control" value="Upload" />
 					    </div>
 					 </div>
 					 <div class="form-group">
 			          <label class="control-label col-sm-2" for="address">Upload Image 2:</label>
 			           <div class="col-sm-4">  
-					     <form:input type="file" id="image[1]" path="image[0]" class="form-control" value="Upload" name='file[1]'/>
+					     <input type="file" name="photos" class="form-control" value="Upload"/>
 					    </div>
-					 </div> --%>
+					 </div> 
 					<div ng-show="false">
 					 <div class="form-group" style="margin-left: 220px;">
 					  <div class="col-sm-8">

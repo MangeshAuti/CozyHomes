@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -10,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.pojos.Address;
@@ -34,12 +38,12 @@ public class OwnerController {
 	}
 	
 	@PostMapping(value = "/addProperty")
-	public String processAddPropertyForm(@Valid Property property, BindingResult result,HttpSession hs,RedirectAttributes flashmap) {
+	public String processAddPropertyForm(@Valid Property property, BindingResult result,HttpSession hs,RedirectAttributes flashmap,@RequestParam MultipartFile []photos) {
 		if (hs.getAttribute("activeUser") != null)
 		{
 			if(result.hasErrors())
 			 return "/owner/addProperty";
-			User updatedActiveUser=ownerService.addProperty(property,(User)hs.getAttribute("activeUser"));
+			User updatedActiveUser=ownerService.addProperty(property,(User)hs.getAttribute("activeUser"),photos);
 			if(updatedActiveUser!=null)
 			{
 				hs.setAttribute("activeUser", updatedActiveUser);
@@ -58,11 +62,25 @@ public class OwnerController {
 	public String showMyPropertyForm(User user, HttpSession hs) {
 		if (hs.getAttribute("activeUser") != null)
 		{
-			ownerService.updateUser((User)hs.getAttribute("activeUser"));
-			System.out.println((User)hs.getAttribute("activeUser"));
+			User u=(User)hs.getAttribute("activeUser");
+			List<Property> ls =ownerService.getAllRegisterProperty(u);
+			System.out.println(ls);
+			hs.setAttribute("propList",ls);
 			return "/owner/myProperty";
 		}
 		return "redirect:/";
 		
 	}
+	
+	@PostMapping(value = "/deleteProperty")
+	public String ProcessdeletePropertyRequest(@RequestParam int propId,HttpSession hs) {
+		if (hs.getAttribute("activeUser") != null)
+		{
+			ownerService.deleteProperty(propId);
+		}
+		return "redirect:/";
+		
+	}
+	
+	
 }

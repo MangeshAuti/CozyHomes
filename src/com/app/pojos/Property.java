@@ -1,6 +1,7 @@
 package com.app.pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,7 +40,7 @@ public class Property implements Serializable {
 	@NotEmpty
 	private String furnishType;
 
-	private List<Image> image;
+	private List<Image> images=new ArrayList<>();
 
 	private String noBeds;
 
@@ -179,23 +180,23 @@ public class Property implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
-	public List<Image> getImage() {
-		return image;
+	public List<Image> getImages() {
+		return images;
 	}
 
-	public void setImage(List<Image> image) {
-		this.image = image;
+	public void setImages(List<Image> image) {
+		this.images = image;
 	}
 
 	public Image addImage(Image image) {
-		getImage().add(image);
+		images.add(image);
 		image.setProperty(this);
 
 		return image;
 	}
 
-	public Image removeProperty(Image image) {
-		getImage().remove(image);
+	public Image removeImage(Image image) {
+		images.remove(image);
 		image.setProperty(null);
 
 		return image;
@@ -211,9 +212,9 @@ public class Property implements Serializable {
 	@Override
 	public String toString() {
 		return "Property [propId=" + propId + ", accomFor=" + accomFor + ", accomType=" + accomType + ", area=" + area
-				+ ", deposite=" + deposite + ", furnishType=" + furnishType + ", image=" + image + ", noBeds=" + noBeds
+				+ ", deposite=" + deposite + ", furnishType=" + furnishType + ", image=" + images + ", noBeds=" + noBeds
 				+ ", noRooms=" + noRooms + ", propType=" + propType + ", rent=" + rent + ", status=" + status
-				+ ", address=" + address + ", user=" + user + "]";
+				+ ", address=" + address + "]";
 	}
 	
 }

@@ -46,7 +46,7 @@ public class Image {
 	
 	@Override
 	public String toString() {
-		return "Images [imageId=" + imageId + ", imageUrl=" + imageUrl + ", property=" + property + "]";
+		return "Images [imageId=" + imageId + ", imageUrl=" + imageUrl + "]";
 	}
 	
 	
