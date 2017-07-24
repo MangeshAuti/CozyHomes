@@ -4,7 +4,6 @@ public class RequestJsonP {
 
 	private String forgot_email;
 	private String newPassword;
-	
 
 	public String getNewPassword() {
 		return newPassword;

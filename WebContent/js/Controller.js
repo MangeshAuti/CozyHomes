@@ -47,13 +47,13 @@ app.controller("LoginController",function($scope,$http){
 
 app.controller("propDeleteController",function($scope,$http,$timeout,$location){
 	
-		$scope.deleteProp=function(){	
+		$scope.deleteProp=function(id){	
 			//$scope.ResponseContent="Loading Data...";
 			//$scope.showResp=true;
 			$http({
 				method:"POST",
 				url:"/CozyHomes1/owner/deleteProperty",
-				data:{"propId":$scope.pId}
+				data:{"propId":id}
 			}).then(function success(response){
 				 $scope.ResponseContent=response.data.message; 
 				 //$timeout(function(){window.location.href="http://localhost:9090/CozyHomes1/account/login"},2000);
