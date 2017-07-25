@@ -70,12 +70,8 @@ app.controller("ProfileController",function($scope,$http,$timeout,$location){
 			     });
 		}
 		
-		
-
 })
-
-
-app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
+	app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 	$scope.isLoaded=false;
 	$scope.deleteProperty=function(propertyId){
 		$http({
@@ -119,6 +115,7 @@ app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 		
 	};
 	
+	
 	$scope.changePropertyStatus=function(propertyId){
 		$http({
 			method:"POST",
@@ -137,7 +134,53 @@ app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 		
 	};
 	
-	  $scope.PropertyTypes = [
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$scope.PropertyTypes = [
 	  				        {type : " HK"},
 	  				        {type : "1BHK"},
 	  				        {type : "2BHK"},
@@ -240,4 +283,4 @@ var app = angular.module('myApp', []);
 					        {type : "2"},
 					        {type : "3"}
 					        ];
-				});			
+					    });			
