@@ -36,6 +36,7 @@ public class OwnerService {
 
 	public User addProperty(Property property, User activeUser, MultipartFile[] photos) {
 		property.setStatus(true);
+		property.setVerificationStatus(false);
 		String[] loc = property.getAddress().getLocation().split(",");
 		System.out.println(loc);
 		loc = (String[]) reverseArray(loc);
@@ -54,9 +55,11 @@ public class OwnerService {
 		ownerDao.addProperty(property);
 		int i = 0;
 		for (MultipartFile p : photos) {
-			String path = servlet.getRealPath("/") + "/" + property.getPropId() + "_" + i + ".jpg";
+			if(p.getSize()>0)
+			{
+			String path = servlet.getRealPath("/") + "/propImg_" + property.getPropId() + "_" + i + ".jpg";
 			Image img = new Image();
-			img.setImageUrl("/" + property.getPropId() + "_" + i + ".jpg");
+			img.setImageUrl("/propImg_" + property.getPropId() + "_" + i + ".jpg");
 			property.addImage(img);
 			File file = new File(path);
 			try {
@@ -66,6 +69,7 @@ public class OwnerService {
 				e.printStackTrace();
 			}
 			i++;
+			}
 		}
 		if (ownerDao.insertProperty(property, activeUser))
 			return activeUser;
@@ -83,8 +87,34 @@ public class OwnerService {
 
 	}
 
-	public boolean updateProperty(Property updateProperty, int userId) {
-		return ownerDao.updatePropety(updateProperty, userId);
+	public String updateProperty(Property updateProperty,User activeUser,MultipartFile[] photos) {
+		Property property=ownerDao.updatePropety(updateProperty,activeUser);
+		if(property!=null)
+		{
+			int i = property.getImages().size();
+			if(i>4)
+				return "max 5 Images allowed";
+			for (MultipartFile p : photos) 
+			{
+				if(p.getSize()>0)
+				{
+				String path = servlet.getRealPath("/") + "/propImg_" + property.getPropId() + "_" + i + ".jpg";
+				Image img = new Image();
+				img.setImageUrl("/propImg_" + property.getPropId() + "_" + i + ".jpg");
+				property.addImage(img);
+				File file = new File(path);
+				try {
+					FileUtils.writeByteArrayToFile(file, p.getBytes());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				i++;
+				}
+			}
+			return "success";
+		}
+		return "fail";
 
 	}
 

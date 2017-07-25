@@ -41,7 +41,6 @@ public class OwnerDao {
 
 		for (Property p : ls) {
 			p.getImages().size();
-
 		}
 
 		return ls;
@@ -54,7 +53,7 @@ public class OwnerDao {
 					Property.class);
 			query.setParameter("propId", propId);
 			Property p = (Property) query.getSingleResult();
-			if (p.getPropId() != userId)
+			if (p.getUser().getUserId() != userId)
 				return false;
 			session.getCurrentSession().delete(p);
 			return true;
@@ -66,24 +65,26 @@ public class OwnerDao {
 
 	}
 
-	public boolean updatePropety(Property updateProperty, int userId) {
+	public Property updatePropety(Property updateProperty, User propertyOwner) {
 		try {
 			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
-			if (p.getPropId() != userId)
-				return false;
+			if (p.getUser().getUserId() != propertyOwner.getUserId())
+				return null;
+			p.getImages().size();
 			p.setAccomFor(updateProperty.getAccomFor());
 			p.setAccomType(updateProperty.getAccomType());
 			p.setDeposite(updateProperty.getDeposite());
 			p.setRent(updateProperty.getRent());
 			p.setFurnishType(updateProperty.getFurnishType());
-			return true;
+			session.getCurrentSession().saveOrUpdate(p);
+			return p;
 		} catch (NoResultException e) {
-			return false;
+			return null;
 		} catch (NonUniqueResultException e) {
-			return false;
+			return null;
 		}
 
 	}

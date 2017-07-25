@@ -40,9 +40,9 @@ public class AccountController {
 	@GetMapping(value = "/login")
 	public String showLoginForm(User user, HttpSession hs) {
 		if (hs.getAttribute("activeUser") != null)
-			return "/user/home";
+			return "redirect:/user/home";
 		else if (hs.getAttribute("activeAdmin") != null)
-			return "/admin/home";
+			return "redirect:/admin/home";
 		else
 			return "/account/login";
 	}
@@ -85,7 +85,7 @@ public class AccountController {
 	public String processRegistrationForm(@Valid User user, BindingResult result, Model map,
 			RedirectAttributes flashmap, HttpSession hs) {
 		System.out.println("in process reg form " + map.toString());
-		if (result.hasErrors()) {
+		if (result.hasFieldErrors("name")||result.hasFieldErrors("email")||result.hasFieldErrors("password")||result.hasFieldErrors("mobileNo")) {
 			System.out.println(result);
 			return "account/registration";
 		}

@@ -21,8 +21,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 public class Property implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	
 	private int propId;
 
 	@NotEmpty
@@ -56,6 +54,8 @@ public class Property implements Serializable {
 	private Address address;
 
 	private User user;
+	
+	private boolean verificationStatus;
 
 	public Property() {
 	}
@@ -158,7 +158,15 @@ public class Property implements Serializable {
 		this.status = status;
 	}
 
-	
+	@Type(type="org.hibernate.type.NumericBooleanType")
+	public boolean isVerificationStatus() {
+		return verificationStatus;
+	}
+
+	public void setVerificationStatus(boolean verificationStatus) {
+		this.verificationStatus = verificationStatus;
+	}
+
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="ADDR_ID")
 	public Address getAddress() {

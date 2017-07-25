@@ -42,7 +42,7 @@ public class User implements Serializable {
 	private String role;
 	private String tempId;
 	private List<Property> properties;
-	private Address address;
+	private Address address=new Address();
 	public User() {
 	}
 

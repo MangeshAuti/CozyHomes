@@ -26,10 +26,7 @@ public class AccountService {
 
 	@Transactional(readOnly = true)
 	public User validateUser(User user) {
-		System.out.println(user.getPassword());
 		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
-		System.out.println(user.getPassword());
-		System.out.println(DigestUtils.md5Hex("mangesh"));
 		User activeUser = accountDao.validateUser(user);
 		if (activeUser != null) 
 			return activeUser;

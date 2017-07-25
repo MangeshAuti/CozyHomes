@@ -13,8 +13,7 @@
 <body>
 	<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
 		<jsp:include page="/master/userNav.jsp" />	
-		<h4>${requestScope.status}</h4>
-		property id<h4>${sessionScope.propId}</h4>
+		<h4 align="center">${requestScope.status}</h4>
 		<div class="col-md-16" id="addproperty_tab">
 			<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
 				<div class="page-header">
@@ -23,7 +22,7 @@
 				   <div class="form-group">
 				      <label class="control-label col-sm-2" for="PropertyType">Property Type:</label>
 				        <div class="col-sm-4">
-				         <form:select path="propType" id="PropertyType" class="form-control" ng-model="PropertyType">
+				         <form:select path="propType" id="PropertyType" class="form-control" ng-model="PropertyType" placeholder="Select Property Type">
 				        <option ng-repeat="x in PropertyTypes" value="{{x.type}}">{{x.type}}</option>
                         </form:select>
                         <form:errors path="propType" cssClass="error" />
@@ -39,7 +38,7 @@
 			      <div class="form-group">
 				      <label class="control-label col-sm-2" for="FurnishingType">Furnishing Type:</label>
 				        <div class="col-sm-4">
-				       <form:select id="FurnishingType" path="furnishType" class="form-control" ng-model="FurnishingType">
+				       <form:select id="FurnishingType" path="furnishType" class="form-control" ng-model="FurnishingType" placeholder="Select Furnishing Type">
 				        <form:option ng-repeat="x in FurnishingTypes" value="{{x.type}}">{{x.type}}</form:option>
                         </form:select>
                          <form:errors path="furnishType" cssClass="error" />
@@ -65,7 +64,7 @@
 				  <div class="form-group">
 				      <label class="control-label col-sm-2" for="AccomodationType">Accomodation Type:</label>
 				        <div class="col-sm-4">
-				        <form:select path="accomType" id="AccomodationType" class="form-control" ng-model="AccType" >
+				        <form:select path="accomType" id="AccomodationType" class="form-control" ng-model="AccType" placeholder="Select Accomodation Type" >
 				        <option ng-repeat="x in AccomodationTypes" value="{{x.type}}">{{x.type}}</option>
 				        <form:errors path="accomType" cssClass="error" />
                         </form:select>

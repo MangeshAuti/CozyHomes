@@ -1,11 +1,16 @@
 package com.app.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.app.pojos.Property;
 import com.app.pojos.User;
 
 @Controller
@@ -18,5 +23,6 @@ public class AdminController {
 			return "redirect:/";
 		return "/admin/home";
 	}
+
 }
 
