@@ -26,64 +26,36 @@
 		           <div class="panel panel-heading"> <i class="fa fa-home" aria-hidden="true"></i> ${prop.propType} In ${prop.address.location}         
 		           </div>
 		           <div class="panel-body">
-		              <span title="Accomodation For" class="prop_info"><i class="fa fa-user-circle-o fa-prop" aria-hidden="true"></i><span> ${prop.accomFor}</span>
+		              <span title="Accomodation For " class="prop_info${prop.propId} prof_info" id="accomFor"><i class="fa fa-user-circle-o fa-prop" aria-hidden="true"></i><span> ${prop.accomFor}</span>
 		              </span>
-		              <span title="Accomodation Type" class="prop_info"><i class="fa fa-users fa-prop" aria-hidden="true"></i> ${prop.accomType}</span>
-		              <span title="Property Area" class="prop_info"><i class="fa fa-columns fa-prop" aria-hidden="true"></i> ${prop.area}</span><hr>
-		              <span title="Rent" class="prop_info"><i class="fa fa-inr fa-prop" aria-hidden="true"></i> ${prop.rent}</span>
-		              <span title="Deposite" class="prop_info"><i class="fa fa-money fa-prop" aria-hidden="true"></i> ${prop.deposite}</span><hr>
-		              <span title="Furnishing Type" class="prop_info"><i class="fa fa-home fa-prop" aria-hidden="true"></i> ${prop.furnishType}</span>
+		              <span title="Accomodation Type" class="prop_info${prop.propId} prof_info" id="accomType"><i class="fa fa-users fa-prop" aria-hidden="true"></i> ${prop.accomType}</span>
+		              <span title="Property Area" class="prop_info${prop.propId} prof_info" id="area"><i class="fa fa-columns fa-prop" aria-hidden="true"></i> ${prop.area}</span><hr>
+		              <span title="Rent" class="prop_info${prop.propId} prof_info" id="rent"><i class="fa fa-inr fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.rent} </span></span>
+		              <span title="Deposite" class="prop_info${prop.propId} prof_info" id="deposite"><i class="fa fa-money fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.deposite}</span></span><hr>
+		              <span title="Furnishing Type" class="prop_info${prop.propId} prof_info" id="furnishType"><i class="fa fa-home fa-prop" aria-hidden="true"></i> ${prop.furnishType}</span>
 		              <span  class="prop_info">
 		                 <c:if test="${prop.accomType eq 'Shared'}">
-		                   <span title="No of beds"> <i class="fa fa-bed fa-prop" aria-hidden="true"></i> ${prop.noBeds}</span>
+		                   <span title="No of beds"  class="prop_info${prop.propId}" id="noBeds"> <i class="fa fa-bed fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.noBeds}</span></span>
 		                 </c:if>
 		                 <c:if test="${prop.accomType eq 'Private'}">
-		                   <span title="No of Rooms"> <i class="fa fa-user-plus fa-prop" aria-hidden="true"></i> ${prop.noRooms}</span>
+		                   <span title="No of Rooms" class="prop_info${prop.propId}" id="noBeds"> <i class="fa fa-user-plus fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.noRooms}</span></span>
 		                 </c:if>
 		              </span>
-		              <span title="location" class="prop_info"><i class="fa fa-location-arrow fa-prop" aria-hidden="true"></i> ${prop.address.location} ,${prop.address.city}</span>
+		              <span title="location" class="prop_info${prop.propId} prof_info" id="location" ><i class="fa fa-location-arrow fa-prop" aria-hidden="true"></i> ${prop.address.location} ,${prop.address.city}</span>
 		           </div>
 		            <div class="panel-footer">
+		               <form class="pull-left">
+						    <label class="checkbox-inline">
+						      <input type="checkbox" novalidate="" ng-change="changePropertyStatus(${prop.propId})" ng-model="modelvalue[${prop.propId}]" >Deactivate-Property
+						    </label>
+					   </form>    
 		               <span class="quickaction_bar">
-			               <span class="glyphicon glyphicon-pencil quick_action_glyph" aria-hidden="true" data-toggle="modal" data-target="#${prop.propId}" ></span>
+			               <span class="glyphicon glyphicon-ok quick_action_glyph" aria-hidden="true" ng-click="updateProperty(${prop.propId})"></span>
 			               <span class="glyphicon glyphicon-trash quick_action_glyph" aria-hidden="true" ng-click="deleteProperty(${prop.propId})"></span> 
 		               </span>   
 		            </div>
 		        </div>
-		        <div id="${prop.propId}" class="modal fade" role="dialog">
-					  <div class="modal-dialog">
-					
-					    <!-- Modal content-->
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal">&times;</button>
-					        <h5 class="modal-title">Update Property</h5>
-					      </div>
-					      <div class="modal-body">
-					       		<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
-				<div class="page-header">
-					<h4 style="font-weight: bold; font-size: 22px;">Add Property Information</h4>
-				</div>
-				   <div class="form-group">
-				      <label class="control-label col-sm-2" for="PropertyType">Property Type:</label>
-				        <div class="col-sm-4">
-				         <form:select path="propType" id="PropertyType" class="form-control" ng-model="PropertyType">
-				        <option ng-repeat="x in PropertyTypes" value="{{x.type}}">{{x.type}}</option>
-                        </form:select>
-                        <form:errors path="propType" cssClass="error" />
-				      </div>
-				  </div>
-			</form:form>
-					       
-					      </div>
-					     <div class="modal-footer">
-					        <button type="submit" class="btn btn-success" ng-click="updateProperty(${prop.propId})">Update</button>
-					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					     </div>
-					    </div>
-					
-					  </div>
-			  </div>
+		        
 		     </div>
 		  </div>                  
 		</c:forEach>

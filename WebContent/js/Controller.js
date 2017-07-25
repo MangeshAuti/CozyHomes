@@ -67,15 +67,20 @@ app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 	};
 	
 	$scope.updateProperty=function(propertyId){
-		$scope.deposite10="1234";
+		var PropDataForId = {};
+		   PropDataForId["propId"]=propertyId;
+		   var content=	$(".prop_info"+propertyId).each(function() {
+			   PropDataForId[this.id]=this.innerText;
+		   });
+		   
 		$http({
 			method:"POST",
 			url:"/CozyHomes1/owner/updateProperty",
-			data:{"propId":propertyId,"rent":$scope.rent+propertyId}
+			data:{"UpdateData":PropDataForId }
 		}).then(function success(response){
 			$scope.response=response.data.message;
 			$scope.isLoaded=true;
-			$timeout(function(){$scope.isLoaded=false;$window.location.reload();},1000);
+			$timeout(function(){$scope.isLoaded=false;$window.location.reload();},3000);
 		},
         function error(response){
 			$scope.response=response.data.errorMessage;
@@ -85,15 +90,72 @@ app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 		
 	};
 	
-	$scope.compareString=function(value1,value2){
 	
-		if (value1 == value2) 
-        {
-          return true;
-        }		
-		 return false;
+	$scope.changePropertyStatus=function(propertyId){
+		$http({
+			method:"POST",
+			url:"/CozyHomes1/owner/changePropertyStatus",
+			data:{"propId":propertyId,"status":$scope.modelvalue[propertyId] }
+		}).then(function success(response){
+			$scope.response=response.data.message;
+			$scope.isLoaded=true;
+			$timeout(function(){$scope.isLoaded=false;},3000);
+		},
+        function error(response){
+			$scope.response=response.data.errorMessage;
+			$scope.isLoaded=true;
+			$timeout(function(){$scope.isLoaded=false;},3000);
+		});
+		
 	};
-	  $scope.PropertyTypes = [
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$scope.PropertyTypes = [
 	  				        {type : " HK"},
 	  				        {type : "1BHK"},
 	  				        {type : "2BHK"},

@@ -1,17 +1,15 @@
-<nav class="nav navbar-default">
-			<div class="col-md-3">
-				<div class="navbar-header">
-					<a href="<%=request.getContextPath()%>/" class="navbar-brand">
-						<img alt="logo"
-						src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
-						height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
-					</a>
-				</div>
+  <nav class="nav navbar-default">
+		<div class="col-md-3">
+			<div class="navbar-header">
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand">
+					<img alt="logo" class="logo"
+					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
+				</a>
 			</div>
-			<div class="col-md-9">
+		</div>
+		<div class="col-md-9 navlinks">
 				<ul class="nav nav-pills navbar-right">
-					<li class="active"><a
-						href="<%=request.getContextPath()%>/user/search">Search</a></li>
 					<li><a href="notification.jsp">Notifications<span
 							class="badge">5</span></a></li>
 					<li>
@@ -34,7 +32,7 @@
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button"
 								id="user" data-toggle="dropdown">
-								<span class="glyphicon glyphicon-user"></span>
+								<span class="glyphicon glyphicon-user" style="color:green;"></span>
 								${sessionScope.activeUser.name} <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="user">
@@ -46,5 +44,5 @@
 						</div>
 					</li>
 				</ul>
-			</div>
-		</nav>
+		</div>
+  </nav>
