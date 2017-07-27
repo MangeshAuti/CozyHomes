@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.jsonclasses.ResponseJson;
 import com.app.pojos.Address;
+import com.app.pojos.Notification;
 import com.app.pojos.Property;
 import com.app.pojos.User;
 import com.app.service.OwnerService;
@@ -41,6 +42,7 @@ public class OwnerController {
 
 	}
 
+	
 	@PostMapping(value = "/addProperty")
 	public String processAddPropertyForm(@Valid Property property, BindingResult result, HttpSession hs,
 			RedirectAttributes flashmap, @RequestParam MultipartFile[] photos) {
@@ -51,7 +53,7 @@ public class OwnerController {
 			if (updatedActiveUser != null) {
 				hs.setAttribute("activeUser", updatedActiveUser);
 				hs.setAttribute("propId", property.getPropId());
-				flashmap.addFlashAttribute("status", "Property added Successfully");
+				flashmap.addFlashAttribute("successStatus", "Property added Successfully");
 			} else
 				flashmap.addFlashAttribute("status", "Incorrect Details");
 			return "redirect:/owner/addProperty";
@@ -73,55 +75,79 @@ public class OwnerController {
 
 	}
 
-	// WORK IN PROGRESS
+	@GetMapping(value = "/notification")
+	public String showNotification(HttpSession hs) {
+		if (hs.getAttribute("activeUser") == null)
+			return "redirect:/";
+		List<Notification> ls =ownerService.getNotification((User)hs.getAttribute("activeUser"));
+		System.out.println(ls);
+		hs.setAttribute("notification", ls);
+			return "/owner/notification";
+		
+
+	}
+	
 	@RequestMapping(value = "/deleteProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseJson processdeletePropertyRequest(@RequestBody Property reqJson, HttpSession hs,
-			ResponseJson resJson,HttpServletResponse response) {
+			ResponseJson resJson, HttpServletResponse response) {
 		try {
-				if (hs.getAttribute("activeUser") != null) 
-				{
-					User activeUser = (User) hs.getAttribute("activeUser");
-					if (ownerService.deleteProperty(reqJson.getPropId(), activeUser.getUserId())) 
-					{
-						resJson.setMessage("Property Deleted SuccessFully");
-					}
-					else
-					{
+			if (hs.getAttribute("activeUser") != null) {
+				User activeUser = (User) hs.getAttribute("activeUser");
+				if (ownerService.deleteProperty(reqJson.getPropId(), activeUser.getUserId())) {
+					resJson.setMessage("Property Deleted SuccessFully");
+				} else {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 					throw new Exception("Unable to perform your request ,Try Again");
-					}
 				}
-				else
-				{
-					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-					throw new Exception("Unable to perform your request ,Try Again");
-				}
+			} else {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				throw new Exception("Unable to perform your request ,Try Again");
+			}
 		} catch (Exception e) {
 			resJson.setErrorMessage(e.getMessage());
 		}
 		return resJson;
 	}
 
-	// WORK IN PROGRESS
-	@RequestMapping(value = "/updateProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseJson processUpdatePropertyRequest(@RequestBody Property updateProperty, HttpSession hs, @RequestParam("file") MultipartFile[] photo
-			,ResponseJson resJson,HttpServletResponse response) {
+	public ResponseJson processUpdatePropertyRequest(@RequestBody Property updateProperty,
+			HttpSession hs,ResponseJson resJson,HttpServletResponse response) {
+		try {
+			if (hs.getAttribute("activeUser") != null) {
+				User activeUser = (User) hs.getAttribute("activeUser");
+				if(ownerService.updateProperty(updateProperty, activeUser))
+					resJson.setMessage("Property Updated SuccessFully");
+				else
+					throw new Exception("Unable to perform your request ,Try Again");
+			}
+			else
+			{
+				resJson.setErrorMessage("Unable to perform your request ,Try Again");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+
+		} catch (Exception e) {
+			resJson.setErrorMessage(e.getMessage());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+		return resJson;
+	}
+
+
+	@RequestMapping(value = "/propertyStatus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseJson processPropertyStatus(@RequestBody Property updateProperty, HttpSession hs,
+			ResponseJson resJson, HttpServletResponse response) {
 		if (hs.getAttribute("activeUser") != null) {
 			User activeUser = (User) hs.getAttribute("activeUser");
 			try {
-				String result=ownerService.updateProperty(updateProperty, activeUser,photo);
-				if(result.contains("success"))
-				{
-					resJson.setMessage("Property Updated SuccessFully");
+				if (ownerService.statusUpdateOfProperty(updateProperty, activeUser.getUserId())) {
+					resJson.setMessage("Property Status Change");
 					return resJson;
 				}
-				else if(result.contains("max"))
-				{
-					throw new Exception("Maximum 5 allowed to upload ,Property Information Updated");
-				}
-				else
 				throw new Exception("Unable to perform your request ,Try Again");
 			} catch (Exception e) {
 				resJson.setErrorMessage(e.getMessage());
@@ -133,28 +159,4 @@ public class OwnerController {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		return resJson;
 	}
-	
-	// WORK IN PROGRESS
-		@RequestMapping(value = "/propertyStatus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-		@ResponseBody
-		public ResponseJson processPropertyStatus(@RequestBody Property updateProperty, HttpSession hs,
-				ResponseJson resJson,HttpServletResponse response) {
-			if (hs.getAttribute("activeUser") != null) {
-				User activeUser = (User) hs.getAttribute("activeUser");
-				try {
-					if (ownerService.statusUpdateOfProperty(updateProperty, activeUser.getUserId())) {
-						resJson.setMessage("Property Status Change");
-						return resJson;
-					}
-					throw new Exception("Unable to perform your request ,Try Again");
-				} catch (Exception e) {
-					resJson.setErrorMessage(e.getMessage());
-					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					return resJson;
-				}
-			}
-			resJson.setErrorMessage("Unable to perform your request ,Try Again");
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			return resJson;
-		}
 }

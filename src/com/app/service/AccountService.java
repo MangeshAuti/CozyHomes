@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.AccountDao;
+import com.app.pojos.Address;
 import com.app.pojos.Email;
 import com.app.pojos.User;
 
@@ -102,4 +104,6 @@ public class AccountService {
 	public boolean activateAccount(String activateId) {
 		return accountDao.activateAccount(activateId);
 	}
+
+
 }

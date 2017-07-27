@@ -18,24 +18,26 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.sun.istack.internal.NotNull;
+
 @Entity
 public class Property implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int propId;
 
-	@NotEmpty
+	@NotEmpty(message="* Field Required")
 	private String accomFor;
 
-	@NotEmpty
+	@NotEmpty(message="* Field Required")
 	private String accomType;
 
-	@NotEmpty
+	@NotEmpty(message="* Field Required")
 	private String area;
 
-	@NotEmpty
+	@NotEmpty(message="* Field Required")
 	private String deposite;
 
-	@NotEmpty
+	@NotEmpty(message="* Field Required")
 	private String furnishType;
 
 	private List<Image> images=new ArrayList<>();
@@ -49,7 +51,7 @@ public class Property implements Serializable {
 
 	private int rent;
 	
-	private boolean status;
+	private boolean status;//Deactive Status
 
 	private Address address;
 

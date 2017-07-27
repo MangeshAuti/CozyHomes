@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html >
 <html>
@@ -10,7 +10,6 @@
 <jsp:include page="/master/meta.jsp" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-
 a {
     text-decoration: none;
     display: inline-block;
@@ -36,10 +35,61 @@ a:hover {
     border-radius: 50%;
 }
 </style>
+<style>
+//search page
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+</style>
 </head>
 <body>
 <div class="container">
-<jsp:include page="/master/userNav.jsp" />	
+<nav class="nav navbar-default">
+		<div class="col-md-3">
+			<div class="navbar-header">
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand">
+					<img alt="logo" class="logo"
+					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
+				</a>
+			</div>
+		</div>
+		<div class="col-md-9 navlinks">
+				<ul class="nav nav-pills navbar-right">
+					<li>
+						<a href="<%=request.getContextPath()%>/search/0">Home</a>
+					<li>
+					<li>
+						<a href="<%=request.getContextPath()%>/account/login">Login</a>
+					<li>
+				</ul>
+		</div>	
+</nav>
+
 <div class="row" style="padding-top:15px">
 <form:form modelAttribute="search" method="POST" class="form-inline">
 	<div class="form-group col-md-2">
@@ -124,7 +174,7 @@ a:hover {
 	     <div class="col-md-8">
 	        <div class="panel panel-default prop_quick_view">
 	         	 <div class="panel panel-heading"> 
-	         	  <a href="<%=request.getContextPath()%>/user/propertyDetails/${prop.propId}"><i class="fa fa-home" aria-hidden="true"></i> ${prop.propType} In ${prop.address.location} </a>   
+	         	  <i class="fa fa-home" aria-hidden="true"></i> ${prop.propType} In ${prop.address.location}   
          		 </div>     
 		    	<div class="panel-body">
 		              <span title="Accomodation For " class="prop_info${prop.propId} prof_info" id="accomFor"><i class="fa fa-user-circle-o fa-prop" aria-hidden="true"></i><span> ${prop.accomFor}</span>
@@ -151,12 +201,11 @@ a:hover {
 </c:forEach>
 
 <c:if test="${sessionScope.startResultNo gt 0}">
-	<a href="<%=request.getContextPath()%>/user/home/${sessionScope.startResultNo -5}" class="previous pull-left">&laquo; Previous</a>
+	<a href="<%=request.getContextPath()%>/search/${sessionScope.startResultNo -5}" class="previous pull-left">&laquo; Previous</a>
 </c:if>
 
 <c:if test="${sessionScope.propList.size() ne 0}">
-<a href="<%=request.getContextPath()%>/user/home/${sessionScope.startResultNo +5}" class="next pull-right">Next &raquo;</a>	
+<a href="<%=request.getContextPath()%>/search/${sessionScope.startResultNo +5}" class="next pull-right">Next &raquo;</a>	
 </c:if>
-</div>
-</body>
+</div></body>
 </html>

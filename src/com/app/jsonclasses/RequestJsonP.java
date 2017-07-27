@@ -11,6 +11,33 @@ public class RequestJsonP {
 	private String newPassword;
 	@Length(min=6,message="Password must be greater than 6 character")
 	private String oldPassword;
+	private int propId;
+	private String msg;
+	private String booktime;
+	
+	public int getPropId() {
+		return propId;
+	}
+
+	public void setPropId(int propId) {
+		this.propId = propId;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public String getBooktime() {
+		return booktime;
+	}
+
+	public void setBooktime(String booktime) {
+		this.booktime = booktime;
+	}
 
 	public String getNewPassword() {
 		return newPassword;
@@ -36,5 +63,6 @@ public class RequestJsonP {
 		this.forgot_email = forgot_email;
 	}
 
+	
 	
 }

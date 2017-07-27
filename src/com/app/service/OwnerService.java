@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.OwnerDao;
 import com.app.pojos.Image;
+import com.app.pojos.Notification;
 import com.app.pojos.Property;
 import com.app.pojos.User;
 
@@ -35,7 +36,7 @@ public class OwnerService {
 	}
 
 	public User addProperty(Property property, User activeUser, MultipartFile[] photos) {
-		property.setStatus(true);
+		property.setStatus(false);
 		property.setVerificationStatus(false);
 		String[] loc = property.getAddress().getLocation().split(",");
 		System.out.println(loc);
@@ -87,9 +88,9 @@ public class OwnerService {
 
 	}
 
-	public String updateProperty(Property updateProperty,User activeUser,MultipartFile[] photos) {
-		Property property=ownerDao.updatePropety(updateProperty,activeUser);
-		if(property!=null)
+	public boolean updateProperty(Property updateProperty,User activeUser) {
+		return ownerDao.updatePropety(updateProperty,activeUser);
+		/*if(property!=null)
 		{
 			int i = property.getImages().size();
 			if(i>4)
@@ -115,7 +116,7 @@ public class OwnerService {
 			return "success";
 		}
 		return "fail";
-
+*/
 	}
 
 	public boolean statusUpdateOfProperty(Property updateProperty, int userId) {
@@ -124,5 +125,10 @@ public class OwnerService {
 		else
 			return false;
 
+	}
+
+	public List<Notification> getNotification(User user) {
+		return ownerDao.getNotification(user);
+				
 	}
 }

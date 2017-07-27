@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.app.pojos.Notification;
 import com.app.pojos.Property;
 import com.app.pojos.User;
 
@@ -65,14 +66,14 @@ public class OwnerDao {
 
 	}
 
-	public Property updatePropety(Property updateProperty, User propertyOwner) {
+	public boolean updatePropety(Property updateProperty, User propertyOwner) {
 		try {
 			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
 			if (p.getUser().getUserId() != propertyOwner.getUserId())
-				return null;
+				return false;
 			p.getImages().size();
 			p.setAccomFor(updateProperty.getAccomFor());
 			p.setAccomType(updateProperty.getAccomType());
@@ -80,11 +81,11 @@ public class OwnerDao {
 			p.setRent(updateProperty.getRent());
 			p.setFurnishType(updateProperty.getFurnishType());
 			session.getCurrentSession().saveOrUpdate(p);
-			return p;
+			return true;
 		} catch (NoResultException e) {
-			return null;
+			return false;
 		} catch (NonUniqueResultException e) {
-			return null;
+			return false;
 		}
 
 	}
@@ -95,7 +96,7 @@ public class OwnerDao {
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
-			if (p.getPropId() != userId)
+			if (p.getUser().getUserId() != userId)
 				return false;
 			p.setStatus(updateProperty.isStatus());
 			return true;
@@ -104,6 +105,13 @@ public class OwnerDao {
 		} catch (NonUniqueResultException e) {
 			return false;
 		}
+
+	}
+
+	public List<Notification> getNotification(User user) {
+		return session.getCurrentSession()
+				.createQuery("from Notification n where n.userId =:userId", Notification.class)
+				.setParameter("userId", user.getUserId()).getResultList();
 
 	}
 }

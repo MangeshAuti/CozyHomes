@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<jsp:include page="/master/meta.jsp" />
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCR6ppQ7ZheQRonKAU5h0xKuZkw7XU1Dp0&libraries=places&callback=initAutocomplete"
 	async defer>
 </script>
-<jsp:include page="/master/meta.jsp" />
+
 </head>
 <body ng-app="CozyApp">
 	<div class="container-fluid" ng-controller="ProfileController">
@@ -81,13 +81,22 @@
 							<form:errors path="mobileNo" cssClass="error" />
 						</div>
 					</div>
-
+					
 					<div class="form-group">
-						<label class="col-lg-3 control-label">Address:</label>
+					<label class="col-lg-3 control-label">Old Address:</label>
+					<div class="col-lg-7">
+						${sessionScope.activeUser.address.street}<br>
+						${sessionScope.activeUser.address.location}&emsp;${sessionScope.activeUser.address.city}&emsp;
+						${sessionScope.activeUser.address.state}&emsp;${sessionScope.activeUser.address.country}
+					</div>
+					</div>
+ 				
+					<div class="form-group">
+						<label class="col-lg-3 control-label">New Address:</label>
 						<div class="col-lg-7">
 							<form:input id="autocomplete" class="form-control"
 								placeholder="Enter your address" onFocus="geolocate()"
-								type="text" path="address.location" />
+								type="text" path="address.location"/>
 							<form:errors path="address.location" cssClass="error" />
 						</div>
 					</div>
@@ -95,7 +104,7 @@
 						<label class="col-lg-3 control-label"></label>
 						<div class="col-lg-7">
 							<form:input class="form-control" placeholder="Address Line1"
-								path="address.street" type="text" />
+								path="address.street" type="text"/>
 							<form:errors path="address.street" cssClass="error" />
 						</div>
 					</div>

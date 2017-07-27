@@ -6,7 +6,7 @@
 <meta http-equiv="Refresh" content="2;url=<%=request.getContextPath()%>/account/login">
 <jsp:include page="/master/meta.jsp" />
 </head>
-<body>
+<body background="<%=request.getContextPath()%>/images/banner.jpg">
 <h3 align="center">${requestScope.status}</h3>
 </body>
 </html>

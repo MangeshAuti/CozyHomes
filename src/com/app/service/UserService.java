@@ -21,6 +21,7 @@ import com.app.dao.UserDao;
 import com.app.jsonclasses.RequestJsonP;
 import com.app.pojos.Address;
 import com.app.pojos.Image;
+import com.app.pojos.Notification;
 import com.app.pojos.Property;
 import com.app.pojos.Search;
 import com.app.pojos.User;
@@ -58,6 +59,8 @@ public class UserService {
 
 	public boolean updateProfile(User updateUser,User activeUser) {
 		try{
+			if(updateUser.getAddress().getLocation()!=null)
+			{
 		String[] loc = updateUser.getAddress().getLocation().split(",");
 		System.out.println(loc);
 		loc = (String[]) reverseArray(loc);
@@ -71,6 +74,7 @@ public class UserService {
 			activeUser.getAddress().setLocation(loc[3]);
 		else
 			activeUser.getAddress().setLocation(null);
+			}
 		activeUser.setName(updateUser.getName());
 		activeUser.setMobileNo(updateUser.getMobileNo());
 		return userDao.updateProfile(activeUser);
@@ -93,6 +97,31 @@ public class UserService {
 
 	public List<Property> getAllProperty(User user) {
 		return userDao.getProperties(user);
+	}
+
+	public List<Property> getRequestedProperties(Search searchOpt, int start, User activeUser) {
+		if(activeUser.getAddress()!=null && activeUser.getAddress().getCity()!=null)
+			searchOpt.setCity(activeUser.getAddress().getCity());
+		searchOpt.setStart(start);
+		return userDao.getSearchProperties(searchOpt);
+	}
+
+	public Property getProperty(int propId) {
+		return userDao.getProperty(propId);
+	}
+
+	public boolean bookVisit(RequestJsonP notidata, User activeUser) {
+		Notification notification=new Notification();
+		if(notidata.getBooktime()!=null)
+		notification.setBooktime(notidata.getBooktime().substring(0,10));
+		notification.setFromUser(activeUser.getName());
+		notification.setFromUserMobileNo(activeUser.getMobileNo());
+		notification.setMessage(notidata.getMsg());
+		return userDao.sendMessage(notidata,notification);
+	}
+
+	public List<Property> getSearchProperties(Search searchOpt) {
+		return userDao.getSearchProperties(searchOpt);
 	}
 
 	

@@ -1,20 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <jsp:include page="/master/meta.jsp" />
 </head>
-<body ng-app="CozyApp">
+<body ng-app="CozyApp" background="<%=request.getContextPath()%>/images/banner.jpg">
 	<div class="container-fluid">
 		<nav class="nav navbar-default">
 			<div class="navbar-header">
-				<div class="navbar-brand">
-					<img alt="logo" src="<%=request.getContextPath()%>/images/logo.ico"
-						width="30px" height="30px" style="display: inline-block"> <b>&nbsp;CozyHome</b>
-				</div>
+				<a href="<%=request.getContextPath()%>/"
+					class="navbar-brand"> <img alt="logo"
+					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
+				</a>
 			</div>
 			<ul class="nav nav-pills navbar-right">
 				<li id="pill_login"><a href="<%=request.getContextPath()%>/account/login"> Login</a></li>
@@ -22,7 +25,7 @@
 					style="margin-right: 50px">Register </a></li>
 			</ul>
 		</nav>
-		<h3 align="center">${requestScope.status}</h3>
+		<c:if test="${requestScope.status ne null }"><div class="alert alert-warning " >${requestScope.status}</div></c:if>
 		<div class="col-md-3" id="register_tab" ng-controller="RegController">
 			<form:form modelAttribute="user" method="post" id="signup_form" name="regform">
 				<div class="page-header">

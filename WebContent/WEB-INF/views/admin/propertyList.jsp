@@ -1,24 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/master/meta.jsp" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<jsp:include page="/master/meta.jsp" />
+<style>
+a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.previous {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+.next {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.round {
+    border-radius: 50%;
+}
+</style>
 </head>
 <body ng-app="CozyApp">
-<jsp:include page="/master/userNav.jsp" />
-<div class="container prop_container" style="padding-top:30px;">
-    <div ng-controller="MyPropertyController">
-        <div class="responseMessage" ng-show="isLoaded">{{response}}</div>
-        <c:if test="${sessionScope.propList.size() eq 0}">
-			<div class="alert alert-info" align="center">
-				You have not added any property yet.
+<nav class="nav navbar-default">
+		<div class="col-md-3">
+			<div class="navbar-header">
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand">
+					<img alt="logo" class="logo"
+					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
+				</a>
 			</div>
-		</c:if>
+		</div>
+		<div class="col-md-9 navlinks">
+				<ul class="nav nav-pills navbar-right">
+					<li>
+						<a href="<%=request.getContextPath()%>/admin/home">Home</a>
+					<li>
+					<li>
+						<a href="<%=request.getContextPath()%>/admin/propertyList/0" class="active">Properties</a>
+					<li>
+					<li>
+						<a href="<%=request.getContextPath()%>/admin/userList" >Users</a>
+					<li>
+					<li>
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button"
+								id="user" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-user" style="color:green;"></span>
+								${sessionScope.activeAdmin.name} <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="user">
+								<li><a href="<%=request.getContextPath()%>/admin/profile">Profile</a></li>
+								<li><a href="<%=request.getContextPath()%>/account/logout">Logout</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+		</div>	
+  </nav>
+<!-- Property List -->
+<c:if test="${sessionScope.propList.size() eq 0}">
+	<div class="alert alert-info"  align="center">
+		Property Not Available
+	</div>
+</c:if>
+<div class="container prop_container" style="padding-top:30px;">
+    <div ng-controller="AdminController">
+        <div class="responseMessage" ng-show="isLoaded">{{response}}</div>
 		<c:forEach var="prop" items="${sessionScope.propList}">
 		  <div class="row">
 		     <div class="col-md-4">
@@ -51,7 +114,7 @@
 		            <div class="panel-footer">
 		               <form class="pull-left">
 						    <label class="checkbox-inline">
-						      <input type="checkbox" novalidate="" ng-change="changePropertyStatus(${prop.propId})" ng-model="modelvalue[${prop.propId}]"  ng-init="modelvalue[${prop.propId}]=${prop.status}" checked="${prop.status}" >Deactivate-Property
+						      <input type="checkbox" novalidate="" ng-change="changePropertyStatus(${prop.propId})" ng-model="modelvalue[${prop.propId}]" ng-init="modelvalue[${prop.propId}]=${prop.verificationStatus}">Verification-Status
 						    </label>
 					   </form>    
 		               <span class="quickaction_bar">
@@ -60,11 +123,19 @@
 		               </span>   
 		            </div>
 		        </div>
+		        
 		     </div>
 		  </div>                  
 		</c:forEach>
 	</div>
 	<div class="respcontent" ng-show="showResp">{{ResponseContent}}</div>
 </div>	
+<c:if test="${sessionScope.startResultNo gt 0}">
+	<a href="<%=request.getContextPath()%>/admin/propertyList/${sessionScope.startResultNo -5}" class="previous pull-left">&laquo; Previous</a>
+</c:if>
+
+<c:if test="${sessionScope.propList.size() ne 0}">
+<a href="<%=request.getContextPath()%>/admin/propertyList/${sessionScope.startResultNo +5}" class="next pull-right">Next &raquo;</a>
+</c:if>
 </body>
 </html>

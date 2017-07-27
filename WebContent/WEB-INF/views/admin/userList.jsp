@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +29,7 @@
 						<a href="<%=request.getContextPath()%>/admin/propertyList/0">Properties</a>
 					<li>
 					<li>
-						<a href="<%=request.getContextPath()%>/admin/userList">Users</a>
+						<a href="<%=request.getContextPath()%>/admin/userList" class="active">Users</a>
 					<li>
 					<li>
 						<div class="dropdown">
@@ -37,6 +39,7 @@
 								${sessionScope.activeAdmin.name} <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="user">
+								<li><a href="<%=request.getContextPath()%>/admin/profile">Profile</a></li>
 								<li><a href="<%=request.getContextPath()%>/account/logout">Logout</a></li>
 							</ul>
 						</div>
@@ -44,45 +47,38 @@
 				</ul>
 		</div>	
   </nav>
-  
-  
-  <!-- Carousel -->
-  <div class="container" style="width:900px;height:700px"> 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-      <div class="item active">
-        <img src="<%=request.getContextPath()%>/images/screen1.jpg" alt="screen1" style="width:100%">
-      </div>
-
-      <div class="item">
-        <img src="<%=request.getContextPath()%>/images/screen2.jpg" alt="screen2" style="width:100%">
-      </div>
+<!-- user list -->
+<div class="container">
+  <h2>Register User List</h2>
+  <table class="table table-striped">
+    <thead>
     
-      <div class="item">
-        <img src="<%=request.getContextPath()%>/images/screen4.jpg" alt="screen4" style="width:100%">
-      </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile No</th>
+        <th>Location</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="user" items="${sessionScope.userList}">
+     <c:if test="${user.role eq 'u'}">
+      <tr>
+        <td>${user.name}</td>
+        <td>${user.email}</td>
+        <td>${user.mobileNo}</td>
+        <td>${user.address.location}</td>
+        <td>${user.address.city}</td>
+        <td>${user.address.state}</td>
+        <td>${user.address.country}</td>
+      </tr>
+      </c:if>
+      </c:forEach>
+    </tbody>
+  </table>
 </div>
- <!-- footer -->
- <jsp:include page="/master/footer.jsp" />
 </body>
 </html>

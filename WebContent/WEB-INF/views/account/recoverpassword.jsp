@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <jsp:include page="/master/meta.jsp" />
 </head>
-<body ng-app="CozyApp">
+<body ng-app="CozyApp" background="<%=request.getContextPath()%>/images/banner.jpg">
 	<div class="container-fluid">
 		<nav class="nav navbar-default">
 			<div class="navbar-header">

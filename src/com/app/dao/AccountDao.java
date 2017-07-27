@@ -1,5 +1,6 @@
 package com.app.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.NoResultException;
@@ -8,6 +9,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.app.pojos.Address;
 import com.app.pojos.User;
 
 @Repository
@@ -114,6 +117,11 @@ public class AccountDao {
 			return false;
 		}
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getCities() {
+		return session.getCurrentSession().createQuery("select distinct(a.city) from Address a").getResultList();
 	}
 
 }

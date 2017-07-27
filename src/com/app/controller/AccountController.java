@@ -55,8 +55,7 @@ public class AccountController {
 		}
 		User activeUser = accountService.validateUser(user);
 		if (activeUser != null) {
-
-			if (activeUser.getRole() == "a") {
+			if (activeUser.getRole().equals("a") ){
 				hs.setAttribute("activeAdmin", activeUser);
 				return "redirect:/admin/home";
 			}
@@ -70,7 +69,7 @@ public class AccountController {
 
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest request, HttpSession hs) {
-		request.setAttribute("status", "Logout Successfully");
+		request.setAttribute("successStatus", "Logout Successfully");
 		hs.invalidate();
 		return "redirect:/";
 	}
@@ -93,22 +92,22 @@ public class AccountController {
 			if (accountService.registerUser(user) != null) {
 				System.out.println("in process reg form " + user.toString());
 				if (accountService.sendActivationMail(user)) {
-					flashmap.addFlashAttribute("status", "Dear " + user.getName()
+					flashmap.addFlashAttribute("successStatus", "Dear " + user.getName()
 							+ "<br>Registration Successfull <br> Check Your Email for Activate Account");
 					hs.invalidate();
 					return "redirect:/account/login";
 				} else {
 					accountService.removeTempUser(user);
-					map.addAttribute("status", "Incorrect Email Address");
-					return "/account/registration";
+					flashmap.addFlashAttribute("status", "Incorrect Email Address");
+					return "redirect:/account/registration";
 				}
 			} else {
-				map.addAttribute("status", "Incorrect Details Please try again");
-				return "/account/registration";
+				flashmap.addFlashAttribute("status", "Incorrect Details Please try again");
+				return "redirect:/account/registration";
 			}
 		} else {
-			map.addAttribute("status", "You are already registered <a href='login'>Click Here for Login</a>");
-			return "/account/registration";
+			flashmap.addFlashAttribute("status", "You are already registered <a href='login'>Click Here for Login</a>");
+			return "redirect:/account/registration";
 		}
 	}
 
@@ -183,7 +182,7 @@ public class AccountController {
 					throw new Exception("Sorry for inconvenience,Unable to complete this operation at this time");
 
 			} else
-				throw new Exception("Enter valid password.");
+				throw new Exception("Enter valid password.(Password length must be 6 alphanumeric)");
 
 		} catch (Exception e) {
 			responseJson.setErrorMessage(e.getMessage());

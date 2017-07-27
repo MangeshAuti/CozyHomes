@@ -8,12 +8,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <jsp:include page="/master/meta.jsp" />
- </style>
 </head>
-<body>
+<body background="<%=request.getContextPath()%>/images/banner.jpg">
 	<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
 		<jsp:include page="/master/userNav.jsp" />	
-		<h4 align="center">${requestScope.status}</h4>
+		<c:if test="${requestScope.successStatus ne null }"><div class="alert alert-success " align="middle">${requestScope.successStatus}</div></c:if>
+		<c:if test="${requestScope.status ne null }"><div class="alert alert-warning " align="middle" >${requestScope.status}</div></c:if>
 		<div class="col-md-16" id="addproperty_tab">
 			<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
 				<div class="page-header">
@@ -127,6 +127,18 @@
 					 </div>
 					 <div class="form-group">
 			          <label class="control-label col-sm-2" for="address">Upload Image 2:</label>
+			           <div class="col-sm-4">  
+					     <input type="file" name="photos" class="form-control" value="Upload"/>
+					    </div>
+					 </div> 
+					 <div class="form-group">
+			          <label class="control-label col-sm-2" for="address">Upload Image 3:</label>
+			           <div class="col-sm-4">  
+					     <input type="file" name="photos" class="form-control" value="Upload"/>
+					    </div>
+					 </div> 
+					 <div class="form-group">
+			          <label class="control-label col-sm-2" for="address">Upload Image 4:</label>
 			           <div class="col-sm-4">  
 					     <input type="file" name="photos" class="form-control" value="Upload"/>
 					    </div>

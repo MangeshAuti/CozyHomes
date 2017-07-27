@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,17 +36,17 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-//WORK IN PROGRESS
+
 	@GetMapping(value = "/home")
-	public String showLoginForm(User user, HttpSession hs,Search searchOpt) {
+	public String showLoginForm(User user, HttpSession hs, Search searchOpt) {
 		if (hs.getAttribute("activeUser") == null)
 			return "redirect:/";
-		else
-		{
-			/*User activeUser = (User) hs.getAttribute("activeUser");
+		else {
+			User activeUser = (User) hs.getAttribute("activeUser");
 			List<Property> ls = userService.getAllProperty(activeUser);
+			hs.setAttribute("startResultNo",0);
 			System.out.println(ls);
-			hs.setAttribute("propList", ls);*/
+			hs.setAttribute("propList", ls);
 		}
 		return "/user/home";
 	}
@@ -54,7 +55,7 @@ public class UserController {
 	public String showProfileForm(User user, HttpSession hs) {
 		if (hs.getAttribute("activeUser") == null)
 			return "redirect:/";
-		user=(User)hs.getAttribute("activeUser");
+		user = (User) hs.getAttribute("activeUser");
 		return "/user/profile";
 	}
 
@@ -120,6 +121,58 @@ public class UserController {
 		} catch (Exception e) {
 			resJson.setErrorMessage(e.getMessage());
 
+		}
+		return resJson;
+	}
+
+	// W I P
+	@PostMapping(value = "/home")
+	public String processSearchRequest(Search searchOpt,HttpSession hs) {
+		List<Property> ls = userService.getSearchProperties(searchOpt);
+		hs.setAttribute("startResultNo", searchOpt.getStart());
+		System.out.println(ls);
+		hs.setAttribute("propList", ls);
+		return "user/home";
+	}
+	
+	@GetMapping(value = "/home/{start}")
+	public String processSearchPageRequest(@PathVariable int start,Search searchOpt,HttpSession hs) {
+		List<Property> ls = userService.getSearchProperties(searchOpt);
+		hs.setAttribute("startResultNo",start);
+		System.out.println(ls);
+		hs.setAttribute("propList", ls);
+		return "user/home";
+	}
+
+	@GetMapping(value = "/propertyDetails/{propId}")
+	public String showDetailProperty(@PathVariable int propId, HttpSession hs) {
+		if (hs.getAttribute("activeUser") == null)
+			return "redirect:/";
+		Property property = userService.getProperty(propId);
+		hs.setAttribute("prop", property);
+		return "user/propertyDetails";
+	}
+
+	@RequestMapping(value = "/bookVisit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseJson processChangePasswordForm(@RequestBody RequestJsonP notification, HttpSession hs,
+			ResponseJson resJson, HttpServletResponse response) {
+		try {
+			if (hs.getAttribute("activeUser") != null) {
+				User activeUser = (User) hs.getAttribute("activeUser");
+				if (userService.bookVisit(notification, activeUser)) {
+					resJson.setMessage("Message Send");
+				} else {
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					throw new Exception("Unable to perform your request ,Try Again");
+				}
+
+			} else {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				throw new Exception("Unable to perform your request ,Try Again");
+			}
+		} catch (Exception e) {
+			resJson.setErrorMessage(e.getMessage());
 		}
 		return resJson;
 	}

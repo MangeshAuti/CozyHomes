@@ -10,8 +10,9 @@
 		</div>
 		<div class="col-md-9 navlinks">
 				<ul class="nav nav-pills navbar-right">
-					<li><a href="notification.jsp">Notifications<span
-							class="badge">5</span></a></li>
+				<li><a href="<%=request.getContextPath()%>/user/home">Home</span></a></li>
+					<li><a href="<%=request.getContextPath()%>/owner/notification">Notifications<span
+							class="badge"></span></a></li>
 					<li>
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button"

@@ -7,15 +7,25 @@ import javax.persistence.Id;
 
 @Entity
 public class Notification {
-	private Integer notificationId;
-	private String comment;
-	private int propertyId;
-	private int fromUser;
+	private int notificationId;
+	private String message;
+	private String booktime;
+	private int userId;
+	private String fromUser;
+	private String fromUserMobileNo;
 	
 	public Notification() {
-		super();
+		
 	}
-	
+
+
+	@Override
+	public String toString() {
+		return "Notification [notificationId=" + notificationId + ", message=" + message + ", booktime=" + booktime
+				+ ", userId=" + userId + ", fromUser=" + fromUser + ", fromUserMobileNo=" + fromUserMobileNo + "]";
+	}
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Integer getNotificationId() {
@@ -24,23 +34,46 @@ public class Notification {
 	public void setNotificationId(Integer notificationId) {
 		this.notificationId = notificationId;
 	}
-	public String getComment() {
-		return comment;
+
+	public String getMessage() {
+		return message;
 	}
-	public void setComment(String comment) {
-		this.comment = comment;
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public int getPropertyId() {
-		return propertyId;
+
+	public String getBooktime() {
+		return booktime;
 	}
-	public void setPropertyId(int propertyId) {
-		this.propertyId = propertyId;
+
+	public void setBooktime(String booktime) {
+		this.booktime = booktime;
 	}
-	public int getFromUser() {
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getFromUser() {
 		return fromUser;
 	}
-	public void setFromUser(int fromUser) {
+
+	public void setFromUser(String fromUser) {
 		this.fromUser = fromUser;
 	}
+
+	public String getFromUserMobileNo() {
+		return fromUserMobileNo;
+	}
+
+	public void setFromUserMobileNo(String fromUserMobileNo) {
+		this.fromUserMobileNo = fromUserMobileNo;
+	}
+	
 	
 }
