@@ -41,7 +41,7 @@ a:hover {
 <div class="container">
 <jsp:include page="/master/userNav.jsp" />	
 <div class="row" style="padding-top:15px">
-<form:form modelAttribute="search" method="POST" class="form-inline">
+<form:form modelAttribute="search" method="POST" action="/CozyHomes1/user/home/0" class="form-inline">
 	<div class="form-group col-md-2">
 		<label for="loc" style="color: green;">
 			<span style="color: red;" class="glyphicon glyphicon-map-marker"></span>
@@ -115,7 +115,7 @@ a:hover {
 	
 	<div class="form-group col-md-2">
 	<label style="color: green;">Rent: </label> 
-	<form:input path="rent" type="range" min="500" max="15000" step="500"
+	<form:input path="rent" type="range" min="500" max="20000" step="500"
 							value="${searchOpt.rent}" onchange="updateTextInput(this.value);" />
 	 <input  type="text" id="textInput" value="${searchOpt.rent}" disabled="true">
 	 </div>

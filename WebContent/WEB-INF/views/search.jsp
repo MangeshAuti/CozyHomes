@@ -165,7 +165,7 @@ a:hover {
 	
 	<div class="form-group col-md-2">
 	<label style="color: green;">Rent: </label> 
-	<form:input path="rent" type="range" min="500" max="15000" step="500"
+	<form:input path="rent" type="range" min="500" max="20000" step="500"
 							value="${searchOpt.rent}" onchange="updateTextInput(this.value);" />
 	 <input  type="text" id="textInput" value="${searchOpt.rent}" disabled="true">
 	 </div>
