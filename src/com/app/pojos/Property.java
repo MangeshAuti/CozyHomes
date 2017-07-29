@@ -14,49 +14,53 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.sun.istack.internal.NotNull;
-
 @Entity
+@Table(name="PROPERTY")
 public class Property implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int propId;
 
-	@NotEmpty(message="* Field Required")
+	@NotEmpty(message = "* Field Required")
 	private String accomFor;
 
-	@NotEmpty(message="* Field Required")
+	@NotEmpty(message = "* Field Required")
 	private String accomType;
 
-	@NotEmpty(message="* Field Required")
+	@NotEmpty(message = "* Field Required")
 	private String area;
 
-	@NotEmpty(message="* Field Required")
+	@NotEmpty(message = "* Field Required")
 	private String deposite;
 
-	@NotEmpty(message="* Field Required")
+	@NotEmpty(message = "* Field Required")
 	private String furnishType;
 
-	private List<Image> images=new ArrayList<>();
+	private List<Image> images = new ArrayList<>();
 
 	private String noBeds;
 
 	private String noRooms;
 
-	@NotEmpty
+	@NotEmpty(message = "* Field Required")
 	private String propType;
 
+	@NotNull(message = "* Field Required")
+	@Min(0)
 	private int rent;
-	
-	private boolean status;//Deactive Status
+
+	private boolean status;// Deactive Status
 
 	private Address address;
 
 	private User user;
-	
+
 	private boolean verificationStatus;
 
 	public Property() {
@@ -73,7 +77,7 @@ public class Property implements Serializable {
 		this.propId = propId;
 	}
 
-	@Column(name = "ACCOM_FOR")
+	@Column(name = "ACCOM_FOR", length = 10)
 	public String getAccomFor() {
 		return this.accomFor;
 	}
@@ -82,7 +86,7 @@ public class Property implements Serializable {
 		this.accomFor = accomFor;
 	}
 
-	@Column(name = "ACCOM_TYPE")
+	@Column(name = "ACCOM_TYPE", length = 20)
 	public String getAccomType() {
 		return this.accomType;
 	}
@@ -91,6 +95,7 @@ public class Property implements Serializable {
 		this.accomType = accomType;
 	}
 
+	@Column(name = "AREA", length = 10)
 	public String getArea() {
 		return this.area;
 	}
@@ -99,6 +104,7 @@ public class Property implements Serializable {
 		this.area = area;
 	}
 
+	@Column(name = "DEPOSITE", length = 15)
 	public String getDeposite() {
 		return this.deposite;
 	}
@@ -107,7 +113,7 @@ public class Property implements Serializable {
 		this.deposite = deposite;
 	}
 
-	@Column(name = "FURNISH_TYPE")
+	@Column(name = "FURNISH_TYPE", length = 20)
 	public String getFurnishType() {
 		return this.furnishType;
 	}
@@ -116,7 +122,7 @@ public class Property implements Serializable {
 		this.furnishType = furnishType;
 	}
 
-	@Column(name = "NO_BEDS")
+	@Column(name = "NO_BEDS", length = 3)
 	public String getNoBeds() {
 		return this.noBeds;
 	}
@@ -125,7 +131,7 @@ public class Property implements Serializable {
 		this.noBeds = noBeds;
 	}
 
-	@Column(name = "NO_ROOMS")
+	@Column(name = "NO_ROOMS", length = 3)
 	public String getNoRooms() {
 		return this.noRooms;
 	}
@@ -134,7 +140,7 @@ public class Property implements Serializable {
 		this.noRooms = noRooms;
 	}
 
-	@Column(name = "PROP_TYPE")
+	@Column(name = "PROP_TYPE", length = 10)
 	public String getPropType() {
 		return this.propType;
 	}
@@ -143,6 +149,7 @@ public class Property implements Serializable {
 		this.propType = propType;
 	}
 
+	@Column(name = "RENT", length = 10)
 	public int getRent() {
 		return this.rent;
 	}
@@ -151,7 +158,8 @@ public class Property implements Serializable {
 		this.rent = rent;
 	}
 
-	@Type(type="org.hibernate.type.NumericBooleanType")
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	@Column(name = "DEACTIVE_STATUS")
 	public boolean isStatus() {
 		return status;
 	}
@@ -160,7 +168,8 @@ public class Property implements Serializable {
 		this.status = status;
 	}
 
-	@Type(type="org.hibernate.type.NumericBooleanType")
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	@Column(name = "VERIFICATION_STATUS")
 	public boolean isVerificationStatus() {
 		return verificationStatus;
 	}
@@ -169,8 +178,8 @@ public class Property implements Serializable {
 		this.verificationStatus = verificationStatus;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="ADDR_ID")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ADDR_ID")
 	public Address getAddress() {
 		return this.address;
 	}
@@ -218,7 +227,7 @@ public class Property implements Serializable {
 			return propId == ((Property) obj).propId;
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Property [propId=" + propId + ", accomFor=" + accomFor + ", accomType=" + accomType + ", area=" + area
@@ -226,5 +235,5 @@ public class Property implements Serializable {
 				+ ", noRooms=" + noRooms + ", propType=" + propType + ", rent=" + rent + ", status=" + status
 				+ ", address=" + address + "]";
 	}
-	
+
 }

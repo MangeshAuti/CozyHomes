@@ -34,7 +34,7 @@
 		<c:if test="${requestScope.status ne null}">
 		<div class="alert alert-info" >${requestScope.status}</div>
 		</c:if>
-		<div style="margin:100px 0px 100px 0px;">
+		<div style="margin:100px 0px 120px 0px;">
 		
 			<form:form modelAttribute="search" action="search/0" method="POST">
 				<div class="row">
@@ -46,7 +46,7 @@
 							</label> 
 							<form:select class="form-control" path="city">
 								<span class="caret"></span>
-								<c:forEach var="city" items="${requestScope.city}">
+								<c:forEach var="city" items="${sessionScope.city}">
 									<option value='${city}'>${city}</option>
 								</c:forEach>
 							</form:select>
@@ -56,14 +56,13 @@
 						<div class="form-group">
 							<label for="space" style="color: green;"><span
 								style="color: red;" class="glyphicon glyphicon-home"></span>
-								Select Required Space:</label> <form:select class="form-control" path="propType">
+								Property  Type:</label> <form:select class="form-control" path="propType">
 								<span class="caret"></span>
 								<option>HK</option>
 								<option>1BHK</option>
 								<option>2BHK</option>
 								<option>3BHK</option>
 								<option>4BHK</option>
-								<option>Any BHK</option>
 							</form:select>
 						</div>
 					</div>
@@ -71,7 +70,7 @@
 						<div class="form-group">
 							<label for="tenant" style="color: green;"><span
 								style="color: red;" class="glyphicon glyphicon-user"></span>
-								Select Tenant Type:</label> <form:select class="form-control" path="accomFor">
+								Tenant Type:</label> <form:select class="form-control" path="accomFor">
 								<span class="caret"></span>
 								<option>Boy</option>
 								<option>Girl</option>
@@ -83,7 +82,7 @@
 						<div class="form-group">
 							<label for="acco" style="color: green;">
 							<span style="color: red;" class="glyphicon glyphicon-link"></span>
-								Select Accomodation Type:
+								Accomodation Type:
 							</label> 
 							<form:select class="form-control" path="accomType">
 								<span class="caret"></span>

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +26,18 @@ import com.app.pojos.Address;
 import com.app.pojos.Notification;
 import com.app.pojos.Property;
 import com.app.pojos.User;
-import com.app.service.OwnerService;
+import com.app.service.OwnerServiceInterface;
+import com.app.service.UserServiceInterface;
 
 @Controller
 @RequestMapping("/owner")
 public class OwnerController {
 
 	@Autowired
-	private OwnerService ownerService;
+	private OwnerServiceInterface ownerService;
+
+	@Autowired
+	private UserServiceInterface userService;
 
 	@GetMapping(value = "/addProperty")
 	public String showAddPropertyForm(Property property, Address address, HttpSession hs) {
@@ -42,14 +47,19 @@ public class OwnerController {
 
 	}
 
-	
 	@PostMapping(value = "/addProperty")
 	public String processAddPropertyForm(@Valid Property property, BindingResult result, HttpSession hs,
 			RedirectAttributes flashmap, @RequestParam MultipartFile[] photos) {
 		if (hs.getAttribute("activeUser") != null) {
 			if (result.hasErrors())
 				return "/owner/addProperty";
-			User updatedActiveUser = ownerService.addProperty(property, (User) hs.getAttribute("activeUser"), photos);
+			User updatedActiveUser = null;
+			try {
+				updatedActiveUser = ownerService.addProperty(property, (User) hs.getAttribute("activeUser"), photos);
+			} catch (Exception e) {
+				flashmap.addFlashAttribute("status", e.getMessage());
+				return "redirect:/owner/addProperty";
+			}
 			if (updatedActiveUser != null) {
 				hs.setAttribute("activeUser", updatedActiveUser);
 				hs.setAttribute("propId", property.getPropId());
@@ -75,18 +85,27 @@ public class OwnerController {
 
 	}
 
+	// property details
+	@GetMapping(value = "/propertyDetails/{propId}")
+	public String showDetailProperty(@PathVariable int propId, HttpSession hs) {
+		if (hs.getAttribute("activeUser") == null)
+			return "redirect:/";
+		Property property = userService.getProperty(propId);
+		hs.setAttribute("prop", property);
+		return "admin/propertyDetails";
+	}
+
 	@GetMapping(value = "/notification")
 	public String showNotification(HttpSession hs) {
 		if (hs.getAttribute("activeUser") == null)
 			return "redirect:/";
-		List<Notification> ls =ownerService.getNotification((User)hs.getAttribute("activeUser"));
+		List<Notification> ls = ownerService.getNotification((User) hs.getAttribute("activeUser"));
 		System.out.println(ls);
 		hs.setAttribute("notification", ls);
-			return "/owner/notification";
-		
+		return "/owner/notification";
 
 	}
-	
+
 	@RequestMapping(value = "/deleteProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseJson processdeletePropertyRequest(@RequestBody Property reqJson, HttpSession hs,
@@ -110,21 +129,18 @@ public class OwnerController {
 		return resJson;
 	}
 
-	@RequestMapping(value = "/updateProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateProperty", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseJson processUpdatePropertyRequest(@RequestBody Property updateProperty,
-			HttpSession hs,ResponseJson resJson,HttpServletResponse response) {
+	public ResponseJson processUpdatePropertyRequest(@RequestBody Property updateProperty, HttpSession hs,
+			ResponseJson resJson, HttpServletResponse response) {
 		try {
 			if (hs.getAttribute("activeUser") != null) {
 				User activeUser = (User) hs.getAttribute("activeUser");
-				if(ownerService.updateProperty(updateProperty, activeUser))
+				if (ownerService.updateProperty(updateProperty, activeUser))
 					resJson.setMessage("Property Updated SuccessFully");
 				else
 					throw new Exception("Unable to perform your request ,Try Again");
-			}
-			else
-			{
+			} else {
 				resJson.setErrorMessage("Unable to perform your request ,Try Again");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
@@ -135,7 +151,6 @@ public class OwnerController {
 		}
 		return resJson;
 	}
-
 
 	@RequestMapping(value = "/propertyStatus", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

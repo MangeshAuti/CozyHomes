@@ -46,7 +46,7 @@
 								height="150px">
 						</c:if>
 						</br> </br> <input type="file" id="image" class="form-control"
-							value="Upload" name='file' /><br> <input type="submit"
+							value="Upload" name='file' required="true"/><br> <input type="submit"
 							class="btn btn-primary" value="Upload" />
 					</div>
 				</form:form>
@@ -60,7 +60,7 @@
 						<label class="col-lg-3 control-label">Name:</label>
 						<div class="col-lg-7">
 							<form:input type="text" class="form-control"
-								value='${sessionScope.activeUser.name}'	path="name" />
+								value='${sessionScope.activeUser.name}'	path="name" required="true"/>
 							<form:errors path="name" cssClass="error" />
 						</div>
 					</div>
@@ -77,7 +77,7 @@
 						<label class="col-lg-3 control-label">Phone Number:</label>
 						<div class="col-lg-7">
 							<form:input class="form-control" type="text" maxlength='10'
-								value='${sessionScope.activeUser.mobileNo}' path="mobileNo" />
+								value='${sessionScope.activeUser.mobileNo}' path="mobileNo" required="true"/>
 							<form:errors path="mobileNo" cssClass="error" />
 						</div>
 					</div>
@@ -135,18 +135,18 @@
 								<label for="Old Password"> Old Password</label> <input
 									class="form-control" type="password"
 									placeholder="Enter Old Password" autofocus="true"
-									ng-model="oldpass" />
+									ng-model="oldpass" required='true' />
 							</div>
 							<div class="form-group">
 								<label for="Old Password"> New Password</label> <input
 									class="form-control" type="password"
-									placeholder="Enter New Password" ng-model="mainpass" />
+									placeholder="Enter New Password" ng-model="mainpass" required="true" />
 							</div>
 							<div class="form-group">
 								<label for="Old Password"> confirm Password</label> <input
 									class="form-control" type="password"
 									placeholder="Confirm Password" ng-model="confpass" /> <span
-									ng-show="mainpass!=confpass">Password have to match!</span>
+									ng-show="mainpass!=confpass" required="true">Password have to match!</span>
 							</div>
 							<input type="submit" class="btn btn-success"
 								value="Change Password" id="submit" name="btn"

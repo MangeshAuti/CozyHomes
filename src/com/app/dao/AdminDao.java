@@ -14,13 +14,13 @@ import com.app.pojos.Property;
 import com.app.pojos.User;
 
 @Repository
-public class AdminDao {
+public class AdminDao implements AdminDaoInterface {
 	@Autowired
 	private SessionFactory session;
 
 	public boolean delProperty(int propId) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", propId);
 			Property p = (Property) query.getSingleResult();
@@ -35,7 +35,7 @@ public class AdminDao {
 
 	public boolean updateVerificationStatus(Property updateProperty) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
@@ -65,7 +65,7 @@ public class AdminDao {
 
 	public boolean updatePropety(Property updateProperty) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
@@ -82,6 +82,5 @@ public class AdminDao {
 		} catch (NonUniqueResultException e) {
 			return false;
 		}
-
 	}
 }

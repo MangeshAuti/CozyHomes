@@ -14,7 +14,7 @@
 <c:redirect url="/"></c:redirect>
 </c:if>
 <!-- Carousel property Images-->
-<div class="row">
+<div class="row top_cont">
 <div class="col-md-1">
 </div>
 	<div class="col-md-7">
@@ -27,7 +27,7 @@
 		    </ol>
 
 		    <!-- Wrapper for slides -->
-		    <div class="carousel-inner">
+		    <div class="carousel-inner show_prop_detail">
 		      <div class="item active">
 		      	<c:if test="${prop.images[0] eq null}">
 					<img src="<%=request.getContextPath()%>/images/propDefault.jpg" alt="screen1" style="width:100%;height:70%">
@@ -111,26 +111,27 @@
 			<c:if test="${prop.accomType eq 'Shared' }">
 				No of Beds Available:${prop.noBeds}<hr>
 			</c:if>
-			<c:if test="${prop.accomType eq 'Shared' }">
+			<c:if test="${prop.accomType eq 'Private' }">
 				No of Rooms Available:${prop.noRooms}<hr>
 			</c:if>
 		</div>
 	</div>
 </div>
 <div class="col-md-3" ng-controller="MyPropertyController">
+<c:if test="${prop.user.userId ne sessionScope.activeUser.userId}">
 <div class="panel panel-warning">
 	<div class="panel-heading" align="middle">BOOK VISIT</div>
 		<div class="panel-body">
-		<form class="form">
-			<input type="date" class="form-control" ng-model="booktime"><hr>
-			<span class="glyphicon glyphicon-pencil"></span><input type="text" ng-model="message" class="form-control"><hr>
-			<button type="button" class="btn btn-primary" ng-click="sendMessage(${prop.propId})">Book</button>
+		<form class="form" ng-submit="sendMessage(${prop.propId})">
+			<input type="date" class="form-control" ng-model="booktime" min="{{today | date:'yyyy-MM-dd'}}"  required><hr>
+			<span class="glyphicon glyphicon-pencil" ></span><input type="text" ng-model="message" placeholder="Your message here" class="form-control" maxlength="150"><hr>
+			<button type="submit" class="btn btn-primary" >Book</button>
 		</form>
 		 <div class="responseMessage" ng-show="isLoaded">{{response}}</div>
 		</div>
-	</div>
 </div>
-
+</c:if>
+</div>
 </div>
 </div>
 </body>

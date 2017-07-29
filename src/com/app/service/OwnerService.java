@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.app.dao.OwnerDao;
+import com.app.dao.OwnerDaoInterface;
 import com.app.pojos.Image;
 import com.app.pojos.Notification;
 import com.app.pojos.Property;
@@ -22,9 +22,9 @@ import com.app.pojos.User;
 
 @Service("owner_service")
 @Transactional
-public class OwnerService {
+public class OwnerService implements OwnerServiceInterface {
 	@Autowired
-	private OwnerDao ownerDao;
+	private OwnerDaoInterface ownerDao;
 
 	@Autowired
 	ServletContext servlet;
@@ -35,7 +35,7 @@ public class OwnerService {
 		return list.toArray();
 	}
 
-	public User addProperty(Property property, User activeUser, MultipartFile[] photos) {
+	public User addProperty(Property property, User activeUser, MultipartFile[] photos) throws Exception {
 		property.setStatus(false);
 		property.setVerificationStatus(false);
 		String[] loc = property.getAddress().getLocation().split(",");
@@ -56,20 +56,23 @@ public class OwnerService {
 		ownerDao.addProperty(property);
 		int i = 0;
 		for (MultipartFile p : photos) {
-			if(p.getSize()>0)
-			{
-			String path = servlet.getRealPath("/") + "/propImg_" + property.getPropId() + "_" + i + ".jpg";
-			Image img = new Image();
-			img.setImageUrl("/propImg_" + property.getPropId() + "_" + i + ".jpg");
-			property.addImage(img);
-			File file = new File(path);
-			try {
-				FileUtils.writeByteArrayToFile(file, p.getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			i++;
+			if (p.getSize() > 0) {
+				String[] fileContent = p.getContentType().split("/");
+				if (!(fileContent[1].equals("jpeg") || fileContent[1].equals("jpg") || fileContent.equals("png")))
+					throw new Exception("Image format must be jpg,jpeg or png");
+				if (p.getSize() > 20000000)
+					throw new Exception("Maximum 19 Mb Image allowed");
+				String path = servlet.getRealPath("/") + "/propImg_" + property.getPropId() + "_" + i + ".jpg";
+				Image img = new Image();
+				img.setImageUrl("/propImg_" + property.getPropId() + "_" + i + ".jpg");
+				property.addImage(img);
+				File file = new File(path);
+				try {
+					FileUtils.writeByteArrayToFile(file, p.getBytes());
+				} catch (IOException e) {
+					return null;
+				}
+				i++;
 			}
 		}
 		if (ownerDao.insertProperty(property, activeUser))
@@ -77,7 +80,6 @@ public class OwnerService {
 		return null;
 
 	}
-
 	public List<Property> getAllRegisterProperty(User u) {
 		List<Property> ls = ownerDao.getPropertyList(u);
 		return ls;
@@ -88,35 +90,8 @@ public class OwnerService {
 
 	}
 
-	public boolean updateProperty(Property updateProperty,User activeUser) {
-		return ownerDao.updatePropety(updateProperty,activeUser);
-		/*if(property!=null)
-		{
-			int i = property.getImages().size();
-			if(i>4)
-				return "max 5 Images allowed";
-			for (MultipartFile p : photos) 
-			{
-				if(p.getSize()>0)
-				{
-				String path = servlet.getRealPath("/") + "/propImg_" + property.getPropId() + "_" + i + ".jpg";
-				Image img = new Image();
-				img.setImageUrl("/propImg_" + property.getPropId() + "_" + i + ".jpg");
-				property.addImage(img);
-				File file = new File(path);
-				try {
-					FileUtils.writeByteArrayToFile(file, p.getBytes());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				i++;
-				}
-			}
-			return "success";
-		}
-		return "fail";
-*/
+	public boolean updateProperty(Property updateProperty, User activeUser) {
+		return ownerDao.updatePropety(updateProperty, activeUser);
 	}
 
 	public boolean statusUpdateOfProperty(Property updateProperty, int userId) {
@@ -129,6 +104,6 @@ public class OwnerService {
 
 	public List<Notification> getNotification(User user) {
 		return ownerDao.getNotification(user);
-				
+
 	}
 }

@@ -1,7 +1,6 @@
 package com.app.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -9,46 +8,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.dao.AccountDao;
-import com.app.pojos.Address;
+import com.app.dao.AccountDaoInterface;
 import com.app.pojos.Email;
 import com.app.pojos.User;
 
 @Service("account_service")
 @Transactional
-public class AccountService {
+public class AccountService implements AccountServiceInterface {
 	@Autowired
-	private AccountDao accountDao;
+	private AccountDaoInterface accountDao;
 
 	@Autowired
-	private EmailService emailService;
+	private EmailServiceInterface emailService;
 
 	final static String DOMAINNAME = "localhost";
 	final static int PORTNO = 9090;
 
-	@Transactional(readOnly = true)
 	public User validateUser(User user) {
 		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
 		User activeUser = accountDao.validateUser(user);
-		if (activeUser != null) 
+		if (activeUser != null)
 			return activeUser;
 		return null;
 	}
 
 	public User registerUser(User user) {
-		String tempUUID = UUID.randomUUID().toString();
-		user.setActive(false);
-		user.setRole("u");
-		user.setTempId(tempUUID);
-		user.setRegDate(new Date());
-		System.out.println("inside reg"+user.getPassword());
-		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
-		if (accountDao.addUser(user))
-		{
-			System.out.println("after add property in service"+user);
-			return user;
+		try {
+			user.setActive(false);
+			user.setRole("u");
+			user.setTempId(UUID.randomUUID().toString());
+			user.setRegDate(new Date());
+			user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+			if (accountDao.addUser(user))
+				return user;
+		} catch (Exception e) {
+
 		}
-			
 		return null;
 	}
 
@@ -86,7 +81,6 @@ public class AccountService {
 			return false;
 		}
 		return false;
-
 	}
 
 	public User recoverPasswordfromEmail(String recoverId) {
@@ -100,10 +94,9 @@ public class AccountService {
 			return true;
 		return false;
 	}
-
+	
 	public boolean activateAccount(String activateId) {
 		return accountDao.activateAccount(activateId);
 	}
-
 
 }

@@ -2,42 +2,30 @@ package com.app.pojos;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="ADDRESS")
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int addrId;
-
 	private String location;
-	
 	private String city;
-
 	private String state;
-
 	private String country;
-
 	private String street;
-	/*private Property property;*/
-	
-	/*private User user;*/
 
 	public Address() {
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ADDR_ID")
+	@Column(name = "ADDR_ID")
 	public int getAddrId() {
 		return addrId;
 	}
@@ -46,6 +34,7 @@ public class Address implements Serializable {
 		this.addrId = addrId;
 	}
 
+	@Column(name = "LOCATION")
 	public String getLocation() {
 		return location;
 	}
@@ -54,7 +43,7 @@ public class Address implements Serializable {
 		this.location = location;
 	}
 
-	@Column(length = 30)
+	@Column(length = 30, name = "CITY")
 	public String getCity() {
 		return city;
 	}
@@ -63,7 +52,7 @@ public class Address implements Serializable {
 		this.city = city;
 	}
 
-	@Column(length = 30)
+	@Column(length = 30, name = "STATE")
 	public String getState() {
 		return state;
 	}
@@ -72,7 +61,7 @@ public class Address implements Serializable {
 		this.state = state;
 	}
 
-	@Column(length = 30)
+	@Column(length = 30, name = "COUNTRY")
 	public String getCountry() {
 		return country;
 	}
@@ -81,19 +70,7 @@ public class Address implements Serializable {
 		this.country = country;
 	}
 
-
-	
-	/*@OneToOne
-	@JoinColumn(name="propId")
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-*/
-	
+	@Column(name = "STREET")
 	public String getStreet() {
 		return street;
 	}
@@ -108,7 +85,4 @@ public class Address implements Serializable {
 				+ ", country=" + country + ", street=" + street + "]";
 	}
 
-	
-
-	
 }

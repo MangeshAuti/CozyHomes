@@ -15,7 +15,26 @@
  .def_selection{font-family:verdana;color:blue;}
  .update_prop_form >.form-group >label{color:darkcyan;}
  .edit_prop{padding:8px 4px 8px 2px;}
-.error {
+ .top_cont{margin-top:2%;}
+ .show_prop_detail{height:445px;}
+ #droparrow{float:right;cursor:pointer;}
+ #droparrow:hover{color:blue;}
+ .not_message{display:none;}
+ .img_link{color: floralwhite; text-decoration:none !important;}
+ .img_link:hover{color:black;}
+ table#user_list 
+{
+    border-collapse:separate;
+    border-spacing:0 5px;
+}
+ .borderless td, .borderless th {
+    border: none !important;
+}
+.borderless tr
+{background:aliceblue;}
+ .tablerow>td>i{color: blueviolet;}
+ tr.tablerow td {color: stateblue;}
+.error {	
 	color: red;
 }
 

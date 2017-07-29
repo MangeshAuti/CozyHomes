@@ -11,14 +11,13 @@ import com.app.pojos.Email;
 
 @Service("email_service")
 @Transactional
-public class EmailService {
+public class EmailService implements EmailServiceInterface {
 
 	@Autowired
 	private JavaMailSender sender;
 
 	public boolean sendMail(Email email) {
 		try {
-
 			SimpleMailMessage mesg = new SimpleMailMessage();
 			mesg.setTo(email.getDestEmail());
 			mesg.setSubject(email.getSubject());

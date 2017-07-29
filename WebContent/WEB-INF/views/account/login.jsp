@@ -26,20 +26,22 @@
 		</nav>
 		<c:if test="${requestScope.successStatus ne null }"><div class="alert alert-success " width="500px" align="middle">${requestScope.successStatus}</div></c:if>
 		<c:if test="${requestScope.status ne null }"><div class="alert alert-warning " width="500px" align="middle">${requestScope.status}</div></c:if>
-		<div class="col-md-3" id="login_tab" ng-controller="LoginController">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-3" id="login_tab" ng-controller="LoginController" >
 			<form:form modelAttribute="user" method="post" id="signin_form">
 				<div class="page-header">
-					<h4>Login</h4>
+					<h3>Login</h3>
 				</div>
 				<div class="form-group">
 					<label for="useremail"><span class="glyphicon glyphicon-user"></span> Email</label>
-					<form:input path="email" class="form-control" type="email" placeholder="Email Address" />
+					<form:input path="email" class="form-control" type="email" placeholder="Email Address" autofocus="true" required="true" maxlength='39'/>
 					<form:errors path="email" cssClass="error" />
 				</div>
 
 				<div class="form-group">
 					<label for="password"><span class="glyphicon glyphicon-eye-open"></span> Password</label> 
-					<form:input path="password" class="form-control"  type="password" placeholder="Enter Password" />
+					<form:input path="password" class="form-control"  type="password" placeholder="Enter Password" required="true" maxlength="20"/>
 					<form:errors path="password" cssClass="error" />
 				</div>
 				<div Class="error">${requestScope.response}</div>
@@ -65,7 +67,7 @@
 										class="glyphicon glyphicon-user"></span> Username</label> <input
 										class="form-control" type="email" name=forgot_email
 										id="forgot_email" placeholder="Enter Email" required="true"
-										autofocus="true" ng-model="username" />
+										autofocus="true" ng-model="username" maxlength='39'/>
 									<div id="wait"></div>
 								</div>
 								<input type="submit" class="btn btn-success" value="Reset Now"

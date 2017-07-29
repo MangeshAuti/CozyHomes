@@ -14,177 +14,170 @@
 		<jsp:include page="/master/userNav.jsp" />	
 		<c:if test="${requestScope.successStatus ne null }"><div class="alert alert-success " align="middle">${requestScope.successStatus}</div></c:if>
 		<c:if test="${requestScope.status ne null }"><div class="alert alert-warning " align="middle" >${requestScope.status}</div></c:if>
-		<div class="col-md-16" id="addproperty_tab">
-			<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
-				<div class="page-header">
+		<div class="col-md-12" id="addproperty_tab">
+        	<div class="page-header">
 					<h4 style="font-weight: bold; font-size: 22px;">Add Property Information</h4>
-				</div>
-				   <div class="form-group">
-				      <label class="control-label col-sm-2" for="PropertyType">Property Type:</label>
-				        <div class="col-sm-4">
-				         <form:select path="propType" id="PropertyType" class="form-control" ng-model="PropertyType" placeholder="Select Property Type">
-				        <option ng-repeat="x in PropertyTypes" value="{{x.type}}">{{x.type}}</option>
+			</div>
+			<form:form modelAttribute="property"  method="post" id="addproperty_form" enctype="multipart/form-data" class="form-horizontal">
+                <div class="col-md-6">  
+                    <div class="form-group">
+                        <div class="col-md-3">
+                           <label class="control-label " for="PropertyType">Property Type:</label>
+                        </div>
+                        <div class="col-md-7">
+                            <form:select path="propType" id="PropertyType" class="form-control" ng-init="PropertyType='1BHK'" ng-model="PropertyType" placeholder="Select Property Type" required="true">
+                        <option ng-repeat="x in PropertyTypes" value="{{x.type}}">{{x.type}}</option>
                         </form:select>
                         <form:errors path="propType" cssClass="error" />
-				      </div>
-				  </div>
-			    <div class="form-group">
-			      <label class="control-label col-sm-2" for="area">Area(sqft):</label>
-			      <div class="col-sm-4">          
-			        <form:input  path="area" class="form-control" placeholder="Enter Area" />
-			        <form:errors path="area" cssClass="error" />
-			     </div>
-			     </div>
-			      <div class="form-group">
-				      <label class="control-label col-sm-2" for="FurnishingType">Furnishing Type:</label>
-				        <div class="col-sm-4">
-				       <form:select id="FurnishingType" path="furnishType" class="form-control" ng-model="FurnishingType" placeholder="Select Furnishing Type">
-				        <form:option ng-repeat="x in FurnishingTypes" value="{{x.type}}">{{x.type}}</form:option>
-                        </form:select>
-                         <form:errors path="furnishType" cssClass="error" />
-				      </div>
-				  </div>
-				  <div class="form-group">
-				  	<label class="control-label col-sm-2" for="AccomodatonFor">Accomodation For:</label>
-				   	<div>
-				     	<div class="col-sm-3">
-				      		<div class="checkbox-inline">
-				       			<label><input  type="radio"  path="accomFor" name="accomFor" value="boy" ng-model="boy">Boy</label>
-				      		</div>
-				      		<div  class="checkbox-inline">
-				       			<label><input  type="radio" path="accomFor" name="accomFor" value="girl" ng-model="girl">Girl</label>
-				      		</div>
-				      		<div  class="checkbox-inline">
-				       			<label><input  type="radio" path="accomFor" name="accomFor" value="family" ng-model="family">family</label>
-				      		</div>
-				     </div>
-				      <form:errors path="accomFor" cssClass="error" />
-				  </div>
-				 </div> 
-				  <div class="form-group">
-				      <label class="control-label col-sm-2" for="AccomodationType">Accomodation Type:</label>
-				        <div class="col-sm-4">
-				        <form:select path="accomType" id="AccomodationType" class="form-control" ng-model="AccType" placeholder="Select Accomodation Type" >
-				        <option ng-repeat="x in AccomodationTypes" value="{{x.type}}">{{x.type}}</option>
-				        <form:errors path="accomType" cssClass="error" />
-                        </form:select>
-				      </div>
-				  </div>
-				   <div class="form-group">
-				      <div class="col-sm-12"  ng-if="AccType === 'Shared'">
-				        <label class="control-label col-sm-2" for="NoOfBeds">No Of Beds:</label>
-				        <div class="col-sm-1">
-				        <form:select path="noBeds" id="NoOfBeds" class="form-control" >
-				           <option ng-repeat="x in Beds_Rooms" value="{{x.type}}">{{x.type}}</option>
-				            <form:errors path="noBeds" cssClass="error" />
-                         </form:select>
                         </div>
-				      </div>
-				        <div class="col-sm-12"  ng-if="AccType === 'Private'">
-				         <label class="control-label col-sm-2" for="NoOfRooms">No Of Rooms:</label>
-				          <div class="col-sm-1">
-				             <form:select path="noRooms" id="NoOfRoomss" class="form-control" >
-				             <option ng-repeat="x in Beds_Rooms" value="{{x.type}}">{{x.type}}</option>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label class="control-label" for="area">Area(sqft):</label>
+                        </div>
+                        <div class="col-md-7">          
+                            <form:input  path="area" class="form-control" placeholder="Enter Area" required="true" type="number" min="0" max='99999'/>
+                            <form:errors path="area" cssClass="error" />
+                        </div>
+                    </div>
+                    <div class="form-group"> 
+                        <div class="col-md-3">
+                           <label class="control-label " for="FurnishingType">Furnishing Type:</label>
+                        </div>   
+                        <div class="col-md-7">
+                            <form:select id="FurnishingType" path="furnishType" class="form-control" ng-init="FurnishingType='Full Furnished'" ng-model="FurnishingType" placeholder="Select Furnishing Type" required="true">
+                            <form:option ng-repeat="x in FurnishingTypes" value="{{x.type}}">{{x.type}}</form:option>
                             </form:select>
-                            <form:errors path="noRooms" cssClass="error" />
-                          </div>
-				        </div>
-				  </div>
-				  <div class="form-group">
-			        <label class="control-label col-sm-2" for="rent">Rent:</label>
-			         <div class="col-sm-4">          
-			           <form:input type="number" path="rent" class="form-control" placeholder="Enter Rent" />
-			          <form:errors path="rent" cssClass="error" />
-			         </div>
-			      </div>
-			      
-			       <div class="form-group">
-			        <label class="control-label col-sm-2" for="deposite">Deposite:</label>
-			         <div class="col-sm-4">          
-			          <form:input type="number" class="form-control" path="deposite"  placeholder="Enter Deposite" />
-			          <form:errors path="deposite" cssClass="error" />
-			         </div>
-			       </div>
-			        <div class="form-group">
-			          <label class="control-label col-sm-2" for="address">Address:</label>
-			           <div class="col-sm-4">  
-					      <form:input id="autocomplete" path="address.location" class="form-control" placeholder="Enter your address"
-					             onFocus="geolocate()" type="text"/>
-					    </div>
-					 </div>
-					 <div class="form-group">
-			          <label class="control-label col-sm-2" for="address"></label>
-			           <div class="col-sm-4">  
-					      <form:input path="address.street" class="form-control" placeholder="Address Line1"
-					             type="text"/>
-					    </div>
-					 </div>
-					<div class="form-group">
-			          <label class="control-label col-sm-2" for="address">Upload Image 1:</label>
-			           <div class="col-sm-4">  
-					     <input type="file"  name="photos" class="form-control" value="Upload" />
-					    </div>
-					 </div>
-					 <div class="form-group">
-			          <label class="control-label col-sm-2" for="address">Upload Image 2:</label>
-			           <div class="col-sm-4">  
-					     <input type="file" name="photos" class="form-control" value="Upload"/>
-					    </div>
-					 </div> 
-					 <div class="form-group">
-			          <label class="control-label col-sm-2" for="address">Upload Image 3:</label>
-			           <div class="col-sm-4">  
-					     <input type="file" name="photos" class="form-control" value="Upload"/>
-					    </div>
-					 </div> 
-					 <div class="form-group">
-			          <label class="control-label col-sm-2" for="address">Upload Image 4:</label>
-			           <div class="col-sm-4">  
-					     <input type="file" name="photos" class="form-control" value="Upload"/>
-					    </div>
-					 </div> 
-					<div ng-show="false">
-					 <div class="form-group" style="margin-left: 220px;">
-					  <div class="col-sm-8">
-					    <table id="address">
-					      <tr>
-					        <td class="label">Street address</td>
-					        <td class="slimField">
-					        	<input class="field" disabled="true" id="street_number" path="address.streetNo"/>
-					        </td>
-					        <td class="wideField" colspan="2">
-					        <input path="address.street" class="field" id="route"
-					              disabled="true"/></td>
-					      </tr>
-					      <tr>
-					        <td class="label">City</td>
-					        <td class="wideField" colspan="3"><input path="address.city" class="field" id="locality"
-					              disabled="true"></input></td>
-					      </tr>
-					      <tr>
-					        <td class="label">State</td>
-					        <td class="slimField"><input path="address.state" class="field"
-					              id="administrative_area_level_1" disabled="true"></input></td>
-					        <td class="label">Zip code</td>
-					        <td class="wideField"><input path="address.zipcode" class="field" id="postal_code"
-					              disabled="true"></input></td>
-					      </tr>
-					      <tr>
-					        <td class="label">Country</td>
-					        <td class="wideField" colspan="3"><input path="address.country" class="field"
-					              id="country" disabled="true"></input></td>
-					          </tr>
-					        </table>
-					      </div>
-				    	</div>        
-                   </div>
-		     </div>
-					          
-					      <div class="col-sm-offset-2 col-sm-10">
-					        <button type="submit" class="btn btn-success">Submit</button>
-					      </div>
-					   
-				
+                            <form:errors path="furnishType" cssClass="error" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                           <label class="control-label" for="AccomodatonFor">Accomodation For:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="checkbox-inline">
+                                <label><input  type="radio"  path="accomFor" name="accomFor" value="boy" ng-model="boy"> Boy</label>
+                            </div>
+                            <div  class="checkbox-inline">
+                                <label><input  type="radio" path="accomFor" name="accomFor" value="girl" ng-model="girl"> Girl</label>
+                            </div>
+                            <div  class="checkbox-inline">
+                                <label><input  type="radio" path="accomFor" name="accomFor" value="family" ng-model="family"> family</label>
+                            </div>
+                       		 <form:errors path="accomFor" cssClass="error" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">                        
+                          <label class="control-label " for="AccomodationType">Accom. Type:</label>
+                        </div>
+                        <div class="col-md-7">
+                        <form:select path="accomType" id="AccomodationType" class="form-control"  ng-model="AccType" ng-init="AccType='Shared'" placeholder="Select Accomodation Type" required="true">
+                        	<option ng-repeat="x in AccomodationTypes" value="{{x.type}}">{{x.type}}</option>
+                        </form:select>
+                        </div>
+                        <form:errors path="accomType" cssClass="error" />
+                    </div>
+                    <div class="form-group">
+                        <div  ng-if="AccType === 'Shared'">
+                        	<div class="col-md-3">
+                            	<label class="control-label " for="NoOfBeds">No Of Beds:</label>
+                            </div>
+                            <div class="col-md-7">
+                                <form:select path="noBeds" id="NoOfBeds" class="form-control" >
+                                    <option ng-repeat="x in Beds_Rooms" value="{{x.type}}">{{x.type}}</option>
+                                    <form:errors path="noBeds" cssClass="error" />
+                                </form:select>
+                            </div>
+                        </div>
+                        <div  ng-if="AccType === 'Private'">
+                        	<div class="col-md-3">
+                            	<label class="control-label " for="NoOfRooms">No Of Rooms:</label>
+                            </div>
+                            <div class="col-md-7">
+                                <form:select path="noRooms" id="NoOfRoomss" class="form-control" required="true" >
+                                	<option ng-repeat="x in Beds_Rooms" value="{{x.type}}">{{x.type}}</option>
+                                </form:select>
+                                <form:errors path="noRooms" cssClass="error" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">                        
+                           <label class="control-label " for="rent">Rent:</label>
+                        </div>   
+                        <div class="col-md-7">          
+                        <form:input type="number" path="rent" class="form-control" placeholder="Enter Rent" min='0' max="35000" required="true"/>
+                        <form:errors path="rent" cssClass="error" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">  		      
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                            <label class="control-label " for="deposite">Deposite:</label>
+                        </div>
+                        <div class="col-md-7">          
+                        <form:input type="number" class="form-control" path="deposite"  placeholder="Enter Deposite" min='0' max="99999" required="true"/>
+                        <form:errors path="deposite" cssClass="error" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                           <label class="control-label " for="address">Address:</label>
+                        </div>
+                        <div class="col-md-7">  
+                            <form:input id="autocomplete" path="address.location" class="form-control" placeholder="Enter your address"
+                                    onFocus="geolocate()" type="text" required="true" maxlength='250'/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                           <label class="control-label " for="address"></label>
+                        </div>
+                        <div class="col-md-7">  
+                            <form:input path="address.street" class="form-control" placeholder="Address Line1"
+                                    type="text" maxlength='100' />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                            <label class="control-label " for="address">Upload Image 1:</label>
+                        </div>    
+                        <div class="col-md-7">  
+                            <input type="file"  name="photos" class="form-control" value="Upload" required="true"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                           <label class="control-label " for="address">Upload Image 2:</label>
+                        </div>   
+                        <div class="col-md-7">  
+                            <input type="file" name="photos" class="form-control" value="Upload"/>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                           <label class="control-label " for="address">Upload Image 3:</label>
+                        </div>   
+                        <div class="col-md-7">  
+                            <input type="file" name="photos" class="form-control" value="Upload"/>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-md-3"> 
+                           <label class="control-label " for="address">Upload Image 4:</label>
+                        </div>   
+                        <div class="col-md-7">  
+                            <input type="file" name="photos" class="form-control" value="Upload"/>
+                        </div>
+                    </div> 
+       
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-success pull-right">Submit</button>
+                    </div>
+                </div>
 			</form:form>
 		</div>
 	</div>

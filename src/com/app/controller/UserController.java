@@ -2,7 +2,6 @@ package com.app.controller;
 
 import java.util.List;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -10,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,29 +26,64 @@ import com.app.jsonclasses.ResponseJson;
 import com.app.pojos.Property;
 import com.app.pojos.Search;
 import com.app.pojos.User;
-import com.app.service.UserService;
+import com.app.service.AddressServiceInterface;
+import com.app.service.UserServiceInterface;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserServiceInterface userService;
 
+	@Autowired
+	private AddressServiceInterface addressService;
+
+	// show home page with some property
 	@GetMapping(value = "/home")
 	public String showLoginForm(User user, HttpSession hs, Search searchOpt) {
 		if (hs.getAttribute("activeUser") == null)
 			return "redirect:/";
 		else {
+			List<String> city = addressService.getcity();
+			hs.setAttribute("city", city);
 			User activeUser = (User) hs.getAttribute("activeUser");
 			List<Property> ls = userService.getAllProperty(activeUser);
-			hs.setAttribute("startResultNo",0);
-			System.out.println(ls);
+			hs.setAttribute("searchOpt", searchOpt);
+			hs.setAttribute("startResultNo", 0);
 			hs.setAttribute("propList", ls);
 		}
 		return "/user/home";
 	}
 
+	// show search criteria result
+	@PostMapping(value = "/home/{start}")
+	public String processSearchRequest(@PathVariable(required = false) int start, Search searchOpt, HttpSession hs) {
+		if (hs.getAttribute("activeUser") == null)
+			return "redirect:/";
+		searchOpt.setStart(0);
+		List<Property> ls = userService.getSearchProperties(searchOpt);
+		hs.setAttribute("startResultNo", searchOpt.getStart());
+		hs.setAttribute("searchOpt", searchOpt);
+		hs.setAttribute("propList", ls);
+		return "user/home";
+	}
+
+	// pagination
+	@GetMapping(value = "/home/{start}")
+	public String processSearchPageRequest(@PathVariable int start, Search searchOpt, HttpSession hs) {
+		if (hs.getAttribute("activeUser") == null)
+			return "redirect:/";
+		searchOpt = (Search) hs.getAttribute("searchOpt");
+		System.out.println(searchOpt.getStart());
+		searchOpt.setStart(start);
+		List<Property> ls = userService.getSearchProperties(searchOpt);
+		hs.setAttribute("startResultNo", start);
+		hs.setAttribute("propList", ls);
+		return "user/home";
+	}
+
+	// show profile
 	@GetMapping(value = "/profile")
 	public String showProfileForm(User user, HttpSession hs) {
 		if (hs.getAttribute("activeUser") == null)
@@ -59,18 +92,25 @@ public class UserController {
 		return "/user/profile";
 	}
 
+	// upload profile picture
 	@PostMapping(value = "/uploadProfilePic")
 	public String processUploadProfileImgForm(User user, @RequestParam("file") MultipartFile file,
-			RedirectAttributes flashmap, HttpSession hs, ServletRequest rs) {
+			RedirectAttributes flashmap, HttpSession hs) {
 		if (hs.getAttribute("activeUser") == null)
 			return "redirect:/";
 		else if (!file.isEmpty()) {
 			User activeUser = (User) hs.getAttribute("activeUser");
-			if (!userService.updateProfileImg(file, activeUser))
-				flashmap.addFlashAttribute("Status", "file Upload Fail...");
+			try {
+				if (userService.updateProfileImg(file, activeUser)) {
+					flashmap.addFlashAttribute("successStatus", "Profile Image Uploaded successfully");
+				} else
+					flashmap.addFlashAttribute("status", "file Upload Fail.");
+			} catch (Exception e) {
+				flashmap.addFlashAttribute("status", e.getMessage());
+			}
 			return "redirect:/user/profile";
 		} else {
-			flashmap.addFlashAttribute("Status", "please select file....");
+			flashmap.addFlashAttribute("Status", "please select file.");
 			return "redirect:/user/profile";
 		}
 	}
@@ -125,25 +165,6 @@ public class UserController {
 		return resJson;
 	}
 
-	// W I P
-	@PostMapping(value = "/home")
-	public String processSearchRequest(Search searchOpt,HttpSession hs) {
-		List<Property> ls = userService.getSearchProperties(searchOpt);
-		hs.setAttribute("startResultNo", searchOpt.getStart());
-		System.out.println(ls);
-		hs.setAttribute("propList", ls);
-		return "user/home";
-	}
-	
-	@GetMapping(value = "/home/{start}")
-	public String processSearchPageRequest(@PathVariable int start,Search searchOpt,HttpSession hs) {
-		List<Property> ls = userService.getSearchProperties(searchOpt);
-		hs.setAttribute("startResultNo",start);
-		System.out.println(ls);
-		hs.setAttribute("propList", ls);
-		return "user/home";
-	}
-
 	@GetMapping(value = "/propertyDetails/{propId}")
 	public String showDetailProperty(@PathVariable int propId, HttpSession hs) {
 		if (hs.getAttribute("activeUser") == null)
@@ -155,10 +176,18 @@ public class UserController {
 
 	@RequestMapping(value = "/bookVisit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseJson processChangePasswordForm(@RequestBody RequestJsonP notification, HttpSession hs,
-			ResponseJson resJson, HttpServletResponse response) {
+	public ResponseJson processbookvisitForm(@RequestBody @Valid RequestJsonP notification, BindingResult result,
+			HttpSession hs, ResponseJson resJson, HttpServletResponse response) {
 		try {
 			if (hs.getAttribute("activeUser") != null) {
+				if (result.hasFieldErrors("booktime")) {
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					throw new Exception("Date Required");
+				}
+				if (result.hasFieldErrors("message")) {
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					throw new Exception("Maximum 255 character allowed");
+				}
 				User activeUser = (User) hs.getAttribute("activeUser");
 				if (userService.bookVisit(notification, activeUser)) {
 					resJson.setMessage("Message Send");
@@ -166,7 +195,6 @@ public class UserController {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 					throw new Exception("Unable to perform your request ,Try Again");
 				}
-
 			} else {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				throw new Exception("Unable to perform your request ,Try Again");

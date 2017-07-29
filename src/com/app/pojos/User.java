@@ -7,12 +7,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,35 +18,38 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name="users")
+@Table(name = "USERS")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int userId;
 	private boolean active;
-	@NotEmpty(message="*Field Required")
+	@NotEmpty(message = "*Field Required")
+	@Email(message = "* Invalid Email format")
 	private String email;
 	private String imageAdd;
-	@Length(min=10,max=10,message="* Mobile number must be 10 digit")
+	@Length(min = 10, max = 10, message = "* Mobile number must be 10 digit")
 	private String mobileNo;
-	@NotEmpty(message="*Field Required")
+	@NotEmpty(message = "*Field Required")
 	private String name;
-	@Length(min=6,max=50,message="* password must be min 6 character")
+	@Length(min = 6, max = 50, message = "* password must be min 6 character")
 	private String password;
 	private Date regDate;
 	private String role;
 	private String tempId;
 	private List<Property> properties;
-	private Address address=new Address();
+	private Address address = new Address();
+
 	public User() {
 	}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="USER_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "USER_ID")
 	public int getUserId() {
 		return this.userId;
 	}
@@ -57,7 +58,8 @@ public class User implements Serializable {
 		this.userId = userId;
 	}
 
-	@Type(type="org.hibernate.type.NumericBooleanType")
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	@Column(name = "ACTIVE_STATUS")
 	public boolean getActive() {
 		return this.active;
 	}
@@ -66,7 +68,7 @@ public class User implements Serializable {
 		this.active = active;
 	}
 
-	@Column(length=40,unique=true)
+	@Column(length = 40, unique = true,name="EMAIL")
 	public String getEmail() {
 		return this.email;
 	}
@@ -75,8 +77,7 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	
-	@Column(name="IMAGE_ADD")
+	@Column(name = "IMAGE_ADD")
 	public String getImageAdd() {
 		return this.imageAdd;
 	}
@@ -85,8 +86,7 @@ public class User implements Serializable {
 		this.imageAdd = imageAdd;
 	}
 
-	
-	@Column(name="MOBILE_NO")
+	@Column(name = "MOBILE_NO", length = 12)
 	public String getMobileNo() {
 		return this.mobileNo;
 	}
@@ -95,6 +95,7 @@ public class User implements Serializable {
 		this.mobileNo = mobileNo;
 	}
 
+	@Column(name = "NAME", length = 40)
 	public String getName() {
 		return this.name;
 	}
@@ -103,6 +104,7 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
+	@Column(name = "PASSWORD", length = 50)
 	public String getPassword() {
 		return this.password;
 	}
@@ -110,9 +112,9 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name="REG_DATE")
+	@Column(name = "REG_DATE")
 	public Date getRegDate() {
 		return this.regDate;
 	}
@@ -121,6 +123,7 @@ public class User implements Serializable {
 		this.regDate = regDate;
 	}
 
+	@Column(name = "ROLE", length = 5)
 	public String getRole() {
 		return this.role;
 	}
@@ -129,8 +132,7 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
-	
-	@Column(name="TEMP_ID")
+	@Column(name = "TEMP_ID", length = 50)
 	public String getTempId() {
 		return this.tempId;
 	}
@@ -139,7 +141,7 @@ public class User implements Serializable {
 		this.tempId = tempId;
 	}
 
-	@OneToMany(mappedBy="user",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public List<Property> getProperties() {
 		return this.properties;
 	}
@@ -160,10 +162,8 @@ public class User implements Serializable {
 		return property;
 	}
 
-	
-	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="ADDR_ID")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ADDR_ID")
 	public Address getAddress() {
 		return this.address;
 	}
@@ -172,17 +172,11 @@ public class User implements Serializable {
 		this.address = address;
 	}
 
-
-	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", active=" + active + ", email=" + email + ", imageAdd=" + imageAdd
 				+ ", mobileNo=" + mobileNo + ", name=" + name + ", password=" + password + ", regDate=" + regDate
-				+ ", role=" + role + ", tempId=" + tempId +"]";
+				+ ", role=" + role + ", tempId=" + tempId + "]";
 	}
 
-
-	
-
-	
 }

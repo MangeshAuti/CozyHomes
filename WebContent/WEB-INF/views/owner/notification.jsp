@@ -15,22 +15,23 @@
 				No notification.
 			</div>
 		</c:if>
-<div class="row">
+<div class="row top_cont">
 <div class="col-md-1">
 </div>
-<c:forEach var="noti" items="${sessionScope.notification}">
 <div class="col-md-8">
-<div class="panel panel-info" >
- 		<div class="panel-heading">
- 		${noti.fromUser} want to meet you on ${noti.booktime}
- 		</div>
-		<div class="panel-body">
-		Says:${noti.message}<hr>
-		<span class="glyphicon glyphicon-earphone"></span>${noti.fromUserMobileNo}
+<c:forEach var="noti" items="${sessionScope.notification}">
+<div class="panel panel-info">
+ 		<div class="panel-heading noti_panel">
+ 		<span class="">${noti.fromUser} want to meet you on ${noti.booktime}</span>
+ 		<span class="glyphicon glyphicon-sort " id="droparrow"></span>
+ 		</div> 
+		<div class="panel-body not_message">
+		 Says: ${noti.message}<hr>
+		<span class="glyphicon glyphicon-earphone"></span> ${noti.fromUserMobileNo}
 		</div>
 </div>
-</div></br>
 </c:forEach>
+<div class="col-md-8">
 
 
 </div>

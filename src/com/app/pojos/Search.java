@@ -5,7 +5,7 @@ private String city="pune";
 private String accomFor="boy";
 private String accomType="shared";
 private int rent=10001;
-private String propType="HK";
+private String propType="1BHK";
 private int start=0;
 public Search() {
 	super();

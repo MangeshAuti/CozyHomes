@@ -23,20 +23,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.app.jsonclasses.RequestJsonP;
 import com.app.jsonclasses.ResponseJson;
 import com.app.pojos.User;
-import com.app.service.AccountService;
-import com.app.service.EmailService;
+import com.app.service.AccountServiceInterface;
+import com.app.service.EmailServiceInterface;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 	@Autowired
 	@Qualifier("email_service")
-	private EmailService emailService;
+	private EmailServiceInterface emailService;
 
 	@Autowired
 	@Qualifier("account_service")
-	private AccountService accountService;
+	private AccountServiceInterface accountService;
 
+	// Show login form
 	@GetMapping(value = "/login")
 	public String showLoginForm(User user, HttpSession hs) {
 		if (hs.getAttribute("activeUser") != null)
@@ -47,6 +48,7 @@ public class AccountController {
 			return "/account/login";
 	}
 
+	// Process login form
 	@PostMapping(value = "/login")
 	public String processLoginForm(@Valid User user, BindingResult result, Model map, RedirectAttributes flashmap,
 			HttpSession hs) {
@@ -55,18 +57,22 @@ public class AccountController {
 		}
 		User activeUser = accountService.validateUser(user);
 		if (activeUser != null) {
-			if (activeUser.getRole().equals("a") ){
-				hs.setAttribute("activeAdmin", activeUser);
+			if (activeUser.getRole().equals("a")) {
+				hs.setAttribute("activeAdmin", activeUser);// if user admin
+															// redirect to admin
+															// home page
 				return "redirect:/admin/home";
 			}
 			hs.setAttribute("activeUser", activeUser);
-			return "redirect:/user/home";
+			return "redirect:/user/home";// normal user redirect to user home
+											// page
 		} else {
 			flashmap.addFlashAttribute("response", "* Invalid Username or Password");
 			return "redirect:/account/login";
 		}
 	}
 
+	// logout request
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest request, HttpSession hs) {
 		request.setAttribute("successStatus", "Logout Successfully");
@@ -74,27 +80,25 @@ public class AccountController {
 		return "redirect:/";
 	}
 
+	// show registration form
 	@GetMapping(value = "/registration")
 	public String showRegistrationForm(User user) {
-		System.out.println("in show registration form " + user);
 		return "/account/registration";
 	}
 
+	// process registration form
 	@PostMapping(value = "/registration")
 	public String processRegistrationForm(@Valid User user, BindingResult result, Model map,
 			RedirectAttributes flashmap, HttpSession hs) {
 		System.out.println("in process reg form " + map.toString());
-		if (result.hasFieldErrors("name")||result.hasFieldErrors("email")||result.hasFieldErrors("password")||result.hasFieldErrors("mobileNo")) {
-			System.out.println(result);
+		if (result.hasFieldErrors("name") || result.hasFieldErrors("email") || result.hasFieldErrors("password")
+				|| result.hasFieldErrors("mobileNo"))
 			return "account/registration";
-		}
 		if (!accountService.checkEmail(user.getEmail())) {
 			if (accountService.registerUser(user) != null) {
-				System.out.println("in process reg form " + user.toString());
 				if (accountService.sendActivationMail(user)) {
-					flashmap.addFlashAttribute("successStatus", "Dear " + user.getName()
-							+ "<br>Registration Successfull <br> Check Your Email for Activate Account");
-					hs.invalidate();
+					flashmap.addFlashAttribute("successStatus", "Hello, " + user.getName()
+							+ "<br>Registration Successfull  Check Your Email for Activate Account");
 					return "redirect:/account/login";
 				} else {
 					accountService.removeTempUser(user);
@@ -106,14 +110,14 @@ public class AccountController {
 				return "redirect:/account/registration";
 			}
 		} else {
-			flashmap.addFlashAttribute("status", "You are already registered <a href='login'>Click Here for Login</a>");
+			flashmap.addFlashAttribute("status", "You are already registered");
 			return "redirect:/account/registration";
 		}
 	}
 
+	// process request of account activation from email
 	@GetMapping(value = "/activate/{activateId}")
 	public String processAccountActivationFromEmail(Model map, @PathVariable String activateId) {
-		System.out.println("activate id" + activateId);
 		if (!activateId.isEmpty()) {
 			if (accountService.activateAccount(activateId)) {
 				map.addAttribute("status", "Your Account is now Active...");
@@ -123,6 +127,7 @@ public class AccountController {
 		return "redirect:/";
 	}
 
+	// send temp link to user for recover password
 	@RequestMapping(value = "/forgotpassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseJson processForgotPasswordForm(@RequestBody RequestJsonP emailjson, ResponseJson responseJson,
@@ -142,17 +147,17 @@ public class AccountController {
 		return responseJson;
 	}
 
+	// show recover password form
 	@GetMapping(value = "/recoverpassword")
 	public String showRecoverPassswordForm(HttpSession hs) {
-		System.out.println("in recover form ");
 		if (hs.getAttribute("activeForgotUser") == null)
 			return "redirect:/";
 		return "/account/recoverpassword";
 	}
 
+	// valid recover id and redirect to show recover password form
 	@GetMapping(value = "/recoverPassword/{recoverId}")
-	public String processPasswordRecoveryFromEmail(@PathVariable(required = false) String recoverId,
-			HttpServletRequest request, HttpSession hs, Model map, RedirectAttributes flashmap) {
+	public String processPasswordRecoveryFromEmail(@PathVariable(required = false) String recoverId, HttpSession hs) {
 		if (!recoverId.isEmpty()) {
 			User user = accountService.recoverPasswordfromEmail(recoverId);
 			if (user != null) {
@@ -165,12 +170,13 @@ public class AccountController {
 		return "redirect:/";
 	}
 
+	// validate session and reset password
 	@RequestMapping(value = "/recoverpassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseJson processPasswordRecoveryForm(@RequestBody RequestJsonP requestJson, ResponseJson responseJson,
 			HttpServletResponse response, HttpSession hs, HttpServletRequest request) {
 		try {
-			if (request.getSession(false) == null)
+			if ((User) hs.getAttribute("activeForgotUser") == null)
 				throw new Exception("timeout occured,Unable to complete this operation at this time");
 			if (!requestJson.getNewPassword().isEmpty() && requestJson.getNewPassword().length() > 6) {
 				System.out.println((User) hs.getAttribute("activeForgotUser"));
@@ -190,5 +196,4 @@ public class AccountController {
 		}
 		return responseJson;
 	}
-
 }

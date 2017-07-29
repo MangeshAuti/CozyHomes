@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.dao.AdminDao;
+import com.app.dao.AdminDaoInterface;
 import com.app.pojos.Property;
 import com.app.pojos.User;
 
 @Service("admin_service")
 @Transactional
-public class AdminService {
+public class AdminService implements AdminServiceInterface {
 
 	@Autowired
-	private AdminDao adminDao;
+	private AdminDaoInterface adminDao;
 
 	public boolean deleteProperty(int propId) {
 		return adminDao.delProperty(propId);
@@ -27,7 +27,7 @@ public class AdminService {
 		else
 			return false;
 	}
-
+	
 	public List<User> showUserList() {
 		return adminDao.showUsers();
 	}

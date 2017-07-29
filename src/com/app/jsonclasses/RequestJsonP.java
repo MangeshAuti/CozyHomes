@@ -2,19 +2,21 @@ package com.app.jsonclasses;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class RequestJsonP {
 
-	@Email(message="Invalid Email")
+	@Email(message = "Invalid Email")
 	private String forgot_email;
-	@Length(min=6,message="Password must be greater than 6 character")
+	@Length(min = 6, message = "Password must be greater than 6 character")
 	private String newPassword;
-	@Length(min=6,message="Password must be greater than 6 character")
+	@Length(min = 6, message = "Password must be greater than 6 character")
 	private String oldPassword;
 	private int propId;
 	private String msg;
+	@NotEmpty
 	private String booktime;
-	
+
 	public int getPropId() {
 		return propId;
 	}
@@ -63,6 +65,4 @@ public class RequestJsonP {
 		this.forgot_email = forgot_email;
 	}
 
-	
-	
 }

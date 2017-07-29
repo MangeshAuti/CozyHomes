@@ -15,14 +15,13 @@ import com.app.pojos.Property;
 import com.app.pojos.User;
 
 @Repository
-public class OwnerDao {
+public class OwnerDao implements OwnerDaoInterface {
 
 	@Autowired
 	private SessionFactory session;
 
 	public boolean insertProperty(Property property, User user) {
 		try {
-
 			session.getCurrentSession().update(user);
 			user.addProperty(property);
 			return true;
@@ -50,7 +49,7 @@ public class OwnerDao {
 
 	public boolean delProperty(int propId, int userId) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", propId);
 			Property p = (Property) query.getSingleResult();
@@ -68,7 +67,7 @@ public class OwnerDao {
 
 	public boolean updatePropety(Property updateProperty, User propertyOwner) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();
@@ -92,7 +91,7 @@ public class OwnerDao {
 
 	public boolean statusUpdateOfProperty(Property updateProperty, int userId) {
 		try {
-			Query query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
+			Query<Property> query = session.getCurrentSession().createQuery("from Property p where propId =:propId",
 					Property.class);
 			query.setParameter("propId", updateProperty.getPropId());
 			Property p = (Property) query.getSingleResult();

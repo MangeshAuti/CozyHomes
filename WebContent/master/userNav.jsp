@@ -38,8 +38,6 @@
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="user">
 								<li><a href="<%=request.getContextPath()%>/user/profile">Profile</a></li>
-								<li><a href="<%=request.getContextPath()%>/user/favourite">Favourite
-										Property</a></li>
 								<li><a href="<%=request.getContextPath()%>/account/logout">Logout</a></li>
 							</ul>
 						</div>

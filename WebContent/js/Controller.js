@@ -36,9 +36,13 @@ app.controller("LoginController",function($scope,$http){
 				url:"/CozyHomes1/account/recoverpassword",
 				data:{"newPassword":$scope.confpass}
 			}).then(function success(response){
+				$scope.confpass="";
+		    	 $scope.mainpass="";
 				 $scope.ResponseContent=response.data.message; 
 				 $timeout(function(){window.location.href="http://localhost:9090/CozyHomes1/account/login"},2000);
-			     },function error(response){	
+			     },function error(response){
+			    	 $scope.confpass="";
+			    	 $scope.mainpass="";
 			    	 $scope.ResponseContent=response.data.errorMessage;
 			     });
 		}
@@ -73,6 +77,8 @@ app.controller("ProfileController",function($scope,$http,$timeout,$location){
 })
 	app.controller("MyPropertyController",function($scope,$http,$timeout,$window){
 	$scope.isLoaded=false;
+	var today=new Date();
+	$scope.today = today.toISOString();
 	$scope.deleteProperty=function(propertyId){
 		$http({
 			method:"POST",
@@ -256,17 +262,18 @@ app.controller("SearchPropController",function($scope,$http,$timeout){
 var app = angular.module('myApp', []);
 				app.controller('myCtrl', function($scope) {
 					    $scope.PropertyTypes = [
-				        {type : " HK"},
+				        {type : "HK"},
 				        {type : "1BHK"},
 				        {type : "2BHK"},
 				        {type : "3BHK"},
-				        {type : "4BHK"}
+				        {type : "4BHK"},
+				        {type : "5BHK"}
 				        ];
 				    
 					     $scope.FurnishingTypes = [
 					        {type : "Full Furnished"},
 					        {type : "Semi Furnished"},
-					        {type : "Without Furnished"}
+					        {type : "Un Furnished"}
 			            ];
 					    $scope.AccomodationTypes = [
 					        {type : "Shared"},

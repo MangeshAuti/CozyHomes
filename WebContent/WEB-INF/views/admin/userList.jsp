@@ -16,7 +16,7 @@
 				<a href="<%=request.getContextPath()%>/" class="navbar-brand">
 					<img alt="logo" class="logo"
 					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
-					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>&emsp;<small>Admin</small>
 				</a>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 					<li>
 						<a href="<%=request.getContextPath()%>/admin/propertyList/0">Properties</a>
 					<li>
-					<li>
+					<li class="active">
 						<a href="<%=request.getContextPath()%>/admin/userList" class="active">Users</a>
 					<li>
 					<li>
@@ -39,7 +39,6 @@
 								${sessionScope.activeAdmin.name} <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="user">
-								<li><a href="<%=request.getContextPath()%>/admin/profile">Profile</a></li>
 								<li><a href="<%=request.getContextPath()%>/account/logout">Logout</a></li>
 							</ul>
 						</div>
@@ -49,31 +48,17 @@
   </nav>
 <!-- user list -->
 <div class="container">
-  <h2>Register User List</h2>
-  <table class="table table-striped">
-    <thead>
-    
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Mobile No</th>
-        <th>Location</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Country</th>
-      </tr>
-    </thead>
+  <h4>Register User List</h4>
+  <hr>
+  <table class="table borderless " id="user_list" cellspacing="0">
     <tbody>
     <c:forEach var="user" items="${sessionScope.userList}">
      <c:if test="${user.role eq 'u'}">
-      <tr>
-        <td>${user.name}</td>
-        <td>${user.email}</td>
-        <td>${user.mobileNo}</td>
-        <td>${user.address.location}</td>
-        <td>${user.address.city}</td>
-        <td>${user.address.state}</td>
-        <td>${user.address.country}</td>
+      <tr class="tablerow">
+        <td><i class="fa fa-user-plus " aria-hidden="true"></i> ${user.name}</td>
+        <td><i class="fa fa-envelope" aria-hidden="true"></i> ${user.email}</td>
+        <td><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;${user.mobileNo}</td>
+        <td><i class="fa fa-map-marker" aria-hidden="true"></i> ${user.address.location} ${user.address.city} ${user.address.state} ${user.address.country}</td>
       </tr>
       </c:if>
       </c:forEach>
