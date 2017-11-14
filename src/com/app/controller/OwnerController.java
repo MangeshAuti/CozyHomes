@@ -92,7 +92,7 @@ public class OwnerController {
 			return "redirect:/";
 		Property property = userService.getProperty(propId);
 		hs.setAttribute("prop", property);
-		return "admin/propertyDetails";
+		return "owner/propertyDetails";
 	}
 
 	@GetMapping(value = "/notification")

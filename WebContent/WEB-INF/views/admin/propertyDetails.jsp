@@ -9,7 +9,42 @@
 <jsp:include page="/master/meta.jsp" />
 </head>
 <body ng-app="CozyApp">
-<jsp:include page="/master/userNav.jsp" />
+<nav class="nav navbar-default">
+		<div class="col-md-3">
+			<div class="navbar-header">
+				<a href="<%=request.getContextPath()%>/" class="navbar-brand">
+					<img alt="logo" class="logo"
+					src="<%=request.getContextPath()%>/images/logo.ico" width="30px"
+					height="30px" style="display: inline-block"> <b>&nbsp;CozyHomes</b>&emsp;<small>Admin</small>
+				</a>
+			</div>
+		</div>
+		<div class="col-md-9 navlinks">
+				<ul class="nav nav-pills navbar-right">
+					<li>
+						<a href="<%=request.getContextPath()%>/admin/home">Home</a>
+					<li>
+					<li class="active">
+						<a href="<%=request.getContextPath()%>/admin/propertyList/0" class="active">Properties</a>
+					<li>
+					<li>
+						<a href="<%=request.getContextPath()%>/admin/userList" >Users</a>
+					<li>
+					<li>
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button"
+								id="user" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-user" style="color:green;"></span>
+								${sessionScope.activeAdmin.name} <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="user">
+								<li><a href="<%=request.getContextPath()%>/account/logout">Logout</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+		</div>	
+  </nav>
 <c:if test="${prop eq null }">
 <c:redirect url="/"></c:redirect>
 </c:if>

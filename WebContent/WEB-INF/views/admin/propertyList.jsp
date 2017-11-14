@@ -101,19 +101,19 @@ a:hover {
 		           <div class="panel-body">
 		              <span title="Accomodation For " class="prop_info${prop.propId} prof_info" id="accomFor"><i class="fa fa-user-circle-o fa-prop" aria-hidden="true"></i><span> ${prop.accomFor}</span>
 		              </span>
-		              <span title="Accomodation Type" class="prop_info${prop.propId} prof_info" id="accomType"><i class="fa fa-users fa-prop" aria-hidden="true"></i> ${prop.accomType}</span>
+		              <span title="Accomodation Type" class="prop_info${prop.propId} prof_info" id="accomType"><i class="fa fa-users fa-prop" aria-hidden="true"></i>${prop.accomType}</span>
 		              <span title="Property Area" class="prop_info${prop.propId} prof_info" id="area"><i class="fa fa-columns fa-prop" aria-hidden="true"></i> ${prop.area} Sqft</span><hr>
-		              <span title="Rent" class="prop_info${prop.propId} prof_info" id="rent"><i class="fa fa-inr fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.rent} </span></span>
-		              <span title="Deposite" class="prop_info${prop.propId} prof_info" id="deposite"><i class="fa fa-money fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.deposite}</span></span><hr>
+		              <span title="Rent" class="prop_info${prop.propId} prof_info" id="rent"><i class="fa fa-inr fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable="true"> ${prop.rent} </span></span>
+		              <span title="Deposite" class="prop_info${prop.propId} prof_info" id="deposite"><i class="fa fa-money fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable="true"> ${prop.deposite}</span></span><hr>
 		              <span title="Furnishing Type" class="prop_info${prop.propId} prof_info" id="furnishType"><i class="fa fa-home fa-prop" aria-hidden="true"></i> ${prop.furnishType}</span>
-		              <span  class="prop_info">
-		                 <c:if test="${prop.accomType eq 'Shared'}">
-		                   <span title="No of beds"  class="prop_info${prop.propId}" id="noBeds"> <i class="fa fa-bed fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.noBeds}</span></span>
-		                 </c:if>
-		                 <c:if test="${prop.accomType eq 'Private'}">
-		                   <span title="No of Rooms" class="prop_info${prop.propId}" id="noRooms"> <i class="fa fa-user-plus fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable> ${prop.noRooms}</span></span>
-		                 </c:if>
-		              </span>
+		             
+	                 <c:if test="${prop.accomType eq 'Shared'}">
+	                   <span title="No of beds"  class="prop_info${prop.propId} prof_info" id="noBeds"> <i class="fa fa-bed fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable="true"> ${prop.noBeds}</span></span>
+	                 </c:if>
+	                 <c:if test="${prop.accomType eq 'Private'}">
+	                   <span title="No of Rooms" class="prop_info${prop.propId} prof_info" id="noRooms"> <i class="fa fa-user-plus fa-prop" aria-hidden="true"></i><span class="edit_prop" contenteditable="true"> ${prop.noRooms}</span></span>
+	                 </c:if>
+		              
 		              <span title="location" class="prop_info${prop.propId} prof_info" id="location" ><i class="fa fa-location-arrow fa-prop" aria-hidden="true"></i> ${prop.address.location} ,${prop.address.city}</span>
 		           </div>
 		            <div class="panel-footer">

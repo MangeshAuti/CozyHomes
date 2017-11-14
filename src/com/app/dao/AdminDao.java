@@ -71,10 +71,12 @@ public class AdminDao implements AdminDaoInterface {
 			Property p = (Property) query.getSingleResult();
 			p.getImages().size();
 			p.setAccomFor(updateProperty.getAccomFor());
-			p.setAccomType(updateProperty.getAccomType());
+			p.setAccomType(updateProperty.getAccomType().trim());
 			p.setDeposite(updateProperty.getDeposite());
 			p.setRent(updateProperty.getRent());
 			p.setFurnishType(updateProperty.getFurnishType());
+			p.setNoBeds(updateProperty.getNoBeds());
+			p.setNoRooms(updateProperty.getNoRooms());
 			session.getCurrentSession().saveOrUpdate(p);
 			return true;
 		} catch (NoResultException e) {
